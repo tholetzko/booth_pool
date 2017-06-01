@@ -12,10 +12,12 @@
         <th>Origin</th>
         <th>Destination</th>
         <th>Capacity</th>
+        <th>Remaining Capacity</th>
         <th>Date</th>
         <th>Price</th>
         <th>Organizer</th>
         <th>Actions</th>
+
       </tr>
 
       <% @journeys.each do |journey| %>
@@ -23,6 +25,7 @@
         <td><%= journey.origin %></td>
         <td><%= journey.destination %></td>
         <td><%= journey.capacity %></td>
+        <td><%= journey.capacity - journey.seats.count %></td>
         <td><%= journey.date %></td>
         <td><%= journey.price %></td>
         <td><%= journey.organizer_id %></td>
@@ -30,8 +33,30 @@
           <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
           <a href="/journeys/<%= journey.id %>/edit" class="btn btn-warning">Edit</a>
           <a href="/delete_journey/<%= journey.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+
+
+          <td>
+            <form action="/create_seat" method="post" class="form-inline">
+              <!-- Hidden input for authenticity token to protect from forgery -->
+              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+              <!-- Label and input for journey_id -->
+              <div class="form-group">
+                <input type="hidden" id="journey_id" name="journey_id" placeholder="Journey" class="form-control" value="<%= journey.id %>">
+              </div>
+
+              <!-- Label and input for user_id -->
+              <div class="form-group">
+                <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+              </div>
+
+              <button class="btn btn-success">
+                Take Seat
+              </button>
+            </form>
+          </td>
         </td>
       </tr>
+
       <% end %>
     </table>
   </div>

@@ -11,6 +11,17 @@
       <dt>User</dt>
       <dd><%= @seat.user_id %></dd>
 
+      <dt>Count</dt>
+      <dd><%= Seat.where(:journey_id => @seat.journey_id).count %></dd>
+
+      <dt>Capacity</dt>
+      <dd><%= Journey.find_by(:id => @seat.journey_id).capacity %></dd>
+
+      <% if Seat.where(:journey_id => @seat.journey_id).count > Journey.find_by(:id => @seat.journey_id).capacity %>
+      error
+      <% else %>
+      okay
+      <% end %>
     </dl>
 
     <div class="btn-group btn-group-justified">
