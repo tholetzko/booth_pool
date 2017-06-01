@@ -1,0 +1,40 @@
+<div class="page-header">
+  <h3>Journey #<%= @journey.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Origin</dt>
+      <dd><%= @journey.origin %></dd>
+
+      <dt>Destination</dt>
+      <dd><%= @journey.destination %></dd>
+
+      <dt>Capacity</dt>
+      <dd><%= @journey.capacity %></dd>
+
+      <dt>Date</dt>
+      <dd><%= @journey.date %></dd>
+
+      <dt>Price</dt>
+      <dd><%= @journey.price %></dd>
+
+      <dt>Organizer</dt>
+      <dd><%= @journey.organizer_id %></dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/journeys" class="btn btn-primary">
+        Back
+      </a>
+      <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
+        Edit
+      </a>
+      <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>

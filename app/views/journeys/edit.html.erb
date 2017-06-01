@@ -1,0 +1,82 @@
+<!-- Validation failure messages -->
+<% if @journey.errors.any? %>
+  <% @journey.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Edit Journey #<%= @journey.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/update_journey/<%= @journey.id %>" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for origin -->
+      <div class="form-group">
+        <label for="origin" class="control-label">
+          Origin
+        </label>
+
+        <input type="text" id="origin" name="origin" placeholder="Origin" class="form-control" value="<%= @journey.origin %>">
+      </div>
+
+      <!-- Label and input for destination -->
+      <div class="form-group">
+        <label for="destination" class="control-label">
+          Destination
+        </label>
+
+        <input type="text" id="destination" name="destination" placeholder="Destination" class="form-control" value="<%= @journey.destination %>">
+      </div>
+
+      <!-- Label and input for capacity -->
+      <div class="form-group">
+        <label for="capacity" class="control-label">
+          Capacity
+        </label>
+
+        <input type="text" id="capacity" name="capacity" placeholder="Capacity" class="form-control" value="<%= @journey.capacity %>">
+      </div>
+
+      <!-- Label and input for date -->
+      <div class="form-group">
+        <label for="date" class="control-label">
+          Date
+        </label>
+
+        <input type="text" id="date" name="date" placeholder="Date" class="form-control" value="<%= @journey.date %>">
+      </div>
+
+      <!-- Label and input for price -->
+      <div class="form-group">
+        <label for="price" class="control-label">
+          Price
+        </label>
+
+        <input type="text" id="price" name="price" placeholder="Price" class="form-control" value="<%= @journey.price %>">
+      </div>
+
+      <!-- Label and input for organizer_id -->
+      <div class="form-group">
+        <label for="organizer_id" class="control-label">
+          Organizer
+        </label>
+
+        <input type="text" id="organizer_id" name="organizer_id" placeholder="Organizer" class="form-control" value="<%= @journey.organizer_id %>">
+      </div>
+
+      <button class="btn btn-warning">
+        Update Journey
+      </button>
+      or
+      <a href="/journeys/<%= @journey.id %>">Cancel</a>
+    </form>
+  </div>
+</div>
