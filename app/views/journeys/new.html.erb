@@ -50,8 +50,9 @@
         <label for="date" class="control-label">
           Date
         </label>
+        <input type="datetime-local" class="form-control" id="date" name="date" value="<%= @journey.date %>" >
 
-        <input type="text" id="date" name="date" placeholder="Date" class="form-control" value="<%= @journey.date %>">
+        <!-- <input type="text" id="date" name="date" placeholder="Date" class="form-control" value="<%= @journey.date %>"> -->
       </div>
 
       <!-- Label and input for price -->
@@ -64,12 +65,12 @@
       </div>
 
       <!-- Label and input for organizer_id -->
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="organizer_id" class="control-label">
           Organizer
-        </label>
+        </label> -->
 
-        <input type="text" id="organizer_id" name="organizer_id" placeholder="Organizer" class="form-control" value="<%= @journey.organizer_id %>">
+        <input type="hidden" id="organizer_id" name="organizer_id" placeholder="Organizer" class="form-control" value="<%= current_user.id %>">
       </div>
 
       <button class="btn btn-success">

@@ -19,16 +19,22 @@ class SeatsController < ApplicationController
 
   def create
     @seat = Seat.new
-
     @seat.journey_id = params[:journey_id]
     @seat.user_id = params[:user_id]
+    
+    if (Seat.where(:journey_id => @seat.journey_id).count + 1) > Journey.find_by(:id => @seat.journey_id).capacity
 
-    save_status = @seat.save
+      redirect_to("/seats/", :alert => "No capacity.")
 
-    if save_status == true
-      redirect_to("/seats/#{@seat.id}", :notice => "Seat created successfully.")
     else
-      render("seats/new.html.erb")
+
+      save_status = @seat.save
+
+      if save_status == true
+        redirect_to("/seats/#{@seat.id}", :notice => "Seat created successfully.")
+      else
+        render("seats/new.html.erb")
+      end
     end
   end
 
