@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h3>Seat #<%= @seat.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Journey</dt>
+      <dd><%= @seat.journey_id %></dd>
+
+      <dt>User</dt>
+      <dd><%= @seat.user_id %></dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/seats" class="btn btn-primary">
+        Back
+      </a>
+      <a href="/seats/<%= @seat.id %>/edit" class="btn btn-warning">
+        Edit
+      </a>
+      <a href="/delete_seat/<%= @seat.id %>" class="btn btn-danger" rel="nofollow">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>
