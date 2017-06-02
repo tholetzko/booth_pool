@@ -27,33 +27,197 @@
 
       <dd>
         <!-- Code for Google Map -->
-              <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-              <script>
-                var map;
-                function initialize() {
+        <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 
-                  var myLatlng = new google.maps.LatLng(<%= @latitude %>, <%= @longitude %>);
+        <script>
+        var map;
+        function initialize() {
 
-                  var mapOptions = {
-                    zoom: 15,
-                    center: myLatlng
-                  };
+        var myLatlng = new google.maps.LatLng(<%= @latitude %>, <%= @longitude %>);
 
-                  map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
+        var mapOptions = {
+        zoom: 15,
+        center: myLatlng
+      };
 
-                  var marker = new google.maps.Marker({
-                        position: myLatlng,
-                        map: map,
-                        title: 'Au Cheval'
-                    });
-                }
+      map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
 
-                google.maps.event.addDomListener(window, 'load', initialize);
+      var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'Au Cheval'
+    });
+  }
 
-              </script>
-              <div id="map-canvas"></div>        
+  google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+<div id="map-canvas"></div>
+</dd> -->
+
+
+<script>
+function calculateRoute(from, to) {
+  // Center initialized to Naples, Italy
+  var myOptions = {
+    zoom: 10,
+    center: new google.maps.LatLng(40.84, 14.25),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+  // Draw the map
+  var mapObject = new google.maps.Map(document.getElementById("map"), myOptions);
+
+  var directionsService = new google.maps.DirectionsService();
+  var directionsRequest = {
+    origin: from,
+    destination: to,
+    travelMode: google.maps.DirectionsTravelMode.DRIVING,
+    unitSystem: google.maps.UnitSystem.METRIC
+  };
+  directionsService.route(
+    directionsRequest,
+    function(response, status)
+    {
+      if (status == google.maps.DirectionsStatus.OK)
+      {
+        new google.maps.DirectionsRenderer({
+          map: mapObject,
+          directions: response
+        });
+      }
+      else
+      $("#error").append("Unable to retrieve your route<br />");
+    }
+  );
+}
+
+$(document).ready(function() {
+  // If the browser supports the Geolocation API
+  if (typeof navigator.geolocation == "undefined") {
+    $("#error").text("Your browser doesn't support the Geolocation API");
+    return;
+  }
+
+  $("#from-link, #to-link").click(function(event) {
+    event.preventDefault();
+    var addressId = this.id.substring(0, this.id.indexOf("-"));
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({
+        "location": new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+      },
+      function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK)
+        $("#" + addressId).val(results[0].formatted_address);
+        else
+        $("#error").append("Unable to retrieve your address<br />");
+      });
+    },
+    function(positionError){
+      $("#error").append("Error: " + positionError.message + "<br />");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10 * 1000 // 10 seconds
+    });
+  });
+
+  $("#calculate-route").submit(function(event) {
+    event.preventDefault();
+    calculateRoute($("#from").val(), $("#to").val());
+  });
+});
+</script>
+
+
+  <h1>Calculate your route</h1>
+
+  <form id="calculate-route" name="calculate-route" action="#" method="get">
+    <label for="from">From:</label>
+    <input type="text" id="from" name="from" required="required" placeholder="An address" size="30" />
+
+    <br />
+
+    <label for="to">To:</label>
+    <input type="text" id="to" name="to" required="required" placeholder="Another address" size="30" />
+
+    <br />
+
+    <input type="submit" />
+    <input type="reset" />
+  </form>
+
+  <div id="map"></div>
+  <p id="error"></p>
+
+
+
+
+
+
+
+
+
+
+<dt> price </dt>
+
+<dd>
+
+  <div id="lyft-web-button-parent"></div>
+  <script type="text/javascript">
+  !function(e,t,n,o,l,i,a,c,d,r,u,y,f,m,b,s){var B=t.createElement('script');B.async=!0,
+  B.onload=function(){s!==o&&(e[s]=e[o],delete e[o]),b!==l&&(e[b]=e[l],delete e[l]);
+    var n={address:d,latitude:r,longitude:u,name:y};e[s].initialize({clientId:i,clientToken:a,
+      googleApiKey:c,location:n,objectName:s,parentElement:t.body}),e[b].initialize({clientId:i,
+        clientToken:a,location:n,objectName:b,onClick:function(){return e[s].open(),!1},
+        parentElement:f,theme:m})},B.src=n,f.insertBefore(B,f.childNodes[0])}(window,document,
+          'https://cdn.lyft.com/lyft-web-sdk/1.1.2/lyftWebButton.min.js','lyftWebModal',
+          'lyftWebButton','-PoccgdT6obM',
+          'eDML1DNeun3HevxzN3xICxpWoYxwlAAzUC+wqkqxjhyFr3JekQ1XihIofv0hSduaCry3nsESGT79Te+8Yiayxv5XQqF8MRHckQJoIq84iuy+8w/RTKDxqLw=',
+          'AIzaSyAvfIZDeQLpHcFDlWKw4Ys-VoGyw2vwjxM',
+          '360 East South Water Street, Chicago, IL 60601, USA',
+          '41.8866138','-87.61810650000001','Tobias',
+          document.getElementById('lyft-web-button-parent'),
+          'multicolor','lyftWebButton','lyftWebModal'
+        );
+        </script>
+
       </dd>
+
+      <dt> UBER </dt>
+
+      <dd>
+
+
+        <%= array = @client.price_estimations(start_latitude: "37.7772", start_longitude: "-122.4233",
+        end_latitude: "37.7972", end_longitude: "-122.4533") %>
+
+      </dd>
+      <dt> TEST </dt>
+      <dd>
+        <%= array[1].estimate %>
+        <p>
+          <%= array[1].duration %>
+        </p>
+      </dd>
+
+
+
+      <% time = @client.time_estimations(start_latitude: "37.7772", start_longitude: "-122.4233") %>
+      <p>
+        <%= time[1].estimate
+        %>
+      </p>
+
+
+      <p>
+        <% request = @client.trip_request(product_id: "uberX", start_latitude: "37.7772", start_longitude: "-122.4233", end_latitude: "37.7972", end_longitude: "-122.4533")%>
+        <%= request %>
+      </p>
+
     </div>
   </dl>
 

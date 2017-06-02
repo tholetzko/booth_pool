@@ -8,6 +8,10 @@ end
 gem 'devise'
 gem "starter_generators", :git => "https://github.com/raghubetina/starter_generators"
 gem 'bcrypt', platforms: :ruby
+gem 'uber-ruby', require: 'uber'
+gem 'rlyft'
+gem 'geocoder'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'

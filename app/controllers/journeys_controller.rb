@@ -14,10 +14,35 @@ class JourneysController < ApplicationController
   def show
     @journey = Journey.find(params[:id])
     @street_address = @journey.origin
-      url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB_nAWVr-18Oi_XoadzVHmNT2vevvJfev4&address="+@street_address.gsub(" ","+")
-      parsed_data = JSON.parse(open(url).read)
-      @latitude = parsed_data["results"][0]["geometry"]["location"]["lat"]
-      @longitude = parsed_data["results"][0]["geometry"]["location"]["lng"]
+
+    url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB_nAWVr-18Oi_XoadzVHmNT2vevvJfev4&address="+@street_address.gsub(" ","+")
+    parsed_data = JSON.parse(open(url).read)
+    @latitude = parsed_data["results"][0]["geometry"]["location"]["lat"]
+    @longitude = parsed_data["results"][0]["geometry"]["location"]["lng"]
+
+    @client = Uber::Client.new do |config|
+      config.server_token  = "lFNFQ-VIhAXqiwJNY8YJ9374hP_0MUeZndHSNs3k"
+      config.client_id     = "2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi"
+      config.client_secret = "WsFaZ_JEZei9SEbgh0qEchIiSMTvR0ZLbgM-xmrQ"
+      config.sandbox       = true
+    end
+
+    def location
+      respond_to do |format|
+        format.json {
+          @lat = params["lat"]
+          @lng = params["lng"]
+          radius = 5000
+          type = "restaurant"
+          key = "AIzaSyB_nAWVr-18Oi_XoadzVHmNT2vevvJfev4"
+          url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{lat},#{lng}&radius=#{radius}&types=#{type}&key=#{key}"
+          data = JSON.load(open(url))
+          render json: { :data => data }
+        }
+      end
+    end
+
+
     render("journeys/show.html.erb")
   end
 
