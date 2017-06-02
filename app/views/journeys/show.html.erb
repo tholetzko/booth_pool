@@ -23,43 +23,75 @@
       <dt>Organizer</dt>
       <dd><%= @journey.organizer_id %></dd>
 
-    </dl>
+      <dt> map 2 </dt>
 
-    <div class="btn-group btn-group-justified">
-      <a href="/journeys" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
+      <dd>
+        <!-- Code for Google Map -->
+              <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+              <script>
+                var map;
+                function initialize() {
+
+                  var myLatlng = new google.maps.LatLng(<%= @latitude %>, <%= @longitude %>);
+
+                  var mapOptions = {
+                    zoom: 15,
+                    center: myLatlng
+                  };
+
+                  map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+
+                  var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        map: map,
+                        title: 'Au Cheval'
+                    });
+                }
+
+                google.maps.event.addDomListener(window, 'load', initialize);
+
+              </script>
+              <div id="map-canvas"></div>        
+      </dd>
+    </div>
+  </dl>
+
+  <div class="btn-group btn-group-justified">
+    <a href="/journeys" class="btn btn-primary">
+      Back
+    </a>
+    <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
+      Edit
+    </a>
+    <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
+      Delete
+    </a>
+  </div>
+
+</div>
+
+<div class="btn-group btn-group-justified">
+
+  <form action="/create_seat" method="post">
+    <!-- Hidden input for authenticity token to protect from forgery -->
+    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+    <!-- Label and input for journey_id -->
+    <div class="form-group">
+      <input type="hidden" id="journey_id" name="journey_id" placeholder="Journey" class="form-control" value="<%= @journey.id %>">
     </div>
 
-  </div>
+    <!-- Label and input for user_id -->
+    <div class="form-group">
+      <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+    </div>
 
-      <div class="btn-group btn-group-justified">
+    <button class="btn btn-success">
+      Take Seat
+    </button>
 
-        <form action="/create_seat" method="post">
-          <!-- Hidden input for authenticity token to protect from forgery -->
-          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+  </form>
 
-          <!-- Label and input for journey_id -->
-          <div class="form-group">
-            <input type="hidden" id="journey_id" name="journey_id" placeholder="Journey" class="form-control" value="<%= @journey.id %>">
-          </div>
-
-          <!-- Label and input for user_id -->
-          <div class="form-group">
-            <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
-          </div>
-
-          <button class="btn btn-success">
-            Take Seat
-          </button>
-
-        </form>
-
-  </div>
+</div>
 </div>
