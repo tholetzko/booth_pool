@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+
+devise_for :users
+root to: 'journeys#index'
+
   # Routes for the Seat resource:
   # CREATE
   get "/seats/new", :controller => "seats", :action => "new"
@@ -50,7 +54,4 @@ Rails.application.routes.draw do
   get "/delete_journey/:id", :controller => "journeys", :action => "destroy"
   #------------------------------
 
-  devise_for :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'journeys#index'
 end
