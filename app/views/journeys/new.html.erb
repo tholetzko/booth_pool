@@ -1,11 +1,11 @@
 <!-- Validation failure messages -->
 <% if @journey.errors.any? %>
-  <% @journey.errors.full_messages.each do |message| %>
-    <div class="alert alert-dismissable alert-danger">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <%= message %>
-    </div>
-  <% end %>
+<% @journey.errors.full_messages.each do |message| %>
+<div class="alert alert-dismissable alert-danger">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <%= message %>
+</div>
+<% end %>
 <% end %>
 
 <div class="page-header">
@@ -39,38 +39,41 @@
       <!-- Label and input for capacity -->
       <div class="form-group">
         <label for="capacity" class="control-label">
-          Capacity
+          Seats
         </label>
 
-        <input type="text" id="capacity" name="capacity" placeholder="Capacity" class="form-control" value="<%= @journey.capacity %>">
+        <input type="text" id="capacity" name="capacity" placeholder="Seats" class="form-control" value="<%= @journey.capacity %>">
       </div>
 
       <!-- Label and input for date -->
       <div class="form-group">
-        <label for="date" class="control-label">
+        <label for="datetimepicker" class="control-label">
           Date
         </label>
-        <input type="datetime-local" class="form-control" id="date" name="date" value="<%= @journey.date %>" >
 
-        <!-- <input type="text" id="date" name="date" placeholder="Date" class="form-control" value="<%= @journey.date %>"> -->
+        <div class="form-group">
+          <input type='text' class="form-control" id='datetimepicker' placeholder="Date" name="date" value="<%= @journey.date %>">
+        </div>
+
+        <script type="text/javascript">
+        $(function () {
+          $('#datetimepicker').datetimepicker({
+            format: 'lll',
+            sideBySide: true,
+            stepping: '15'
+          });
+        });
+        </script>
       </div>
 
-      <!-- Label and input for price -->
-      <div class="form-group">
-        <label for="price" class="control-label">
-          Price
-        </label>
-
-        <input type="text" id="price" name="price" placeholder="Price" class="form-control" value="<%= @journey.price %>">
-      </div>
 
       <!-- Label and input for organizer_id -->
       <div class="form-group">
-        <label for="organizer_id" class="control-label">
+        <!-- <label for="organizer_id" class="control-label">
           Organizer
-        </label>
+        </label> -->
 
-        <input type="text" id="organizer_id" name="organizer_id" placeholder="Organizer" class="form-control" value="<%= current_user.id %>">
+        <input type="hidden" id="organizer_id" name="organizer_id" placeholder="Organizer" class="form-control" value="<%= current_user.id %>">
       </div>
 
       <button class="btn btn-success">

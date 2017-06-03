@@ -11,6 +11,8 @@ gem 'bcrypt', platforms: :ruby
 gem 'uber-ruby', require: 'uber'
 gem 'rlyft'
 gem 'geocoder'
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'
