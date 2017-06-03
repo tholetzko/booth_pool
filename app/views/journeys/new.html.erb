@@ -50,9 +50,8 @@
         <label for="date" class="control-label">
           Date
         </label>
-        <input type="datetime-local" class="form-control" id="date" name="date" value="<%= @journey.date %>" >
 
-        <!-- <input type="text" id="date" name="date" placeholder="Date" class="form-control" value="<%= @journey.date %>"> -->
+        <input type="text" id="date" name="date" class="form-control" data-provide="datepicker" value="<%= @journey.date %>">
       </div>
 
       <!-- Label and input for price -->
