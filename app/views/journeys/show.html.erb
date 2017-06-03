@@ -76,43 +76,59 @@
             );
             </script>
 
+            <!-- Buttons -->
+            <% if @journey.organizer_id == current_user.id %>
 
             <div class="btn-group btn-group-justified">
               <a href="/journeys" class="btn btn-primary">
-                Back
+                <i class="fa fa-chevron-left"></i>
               </a>
+
               <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
-                Edit
+                <i class="fa fa-edit"></i>
               </a>
+
               <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
-                Delete
+                <i class="fa fa-trash-o"></i>
               </a>
             </div>
 
-          </div>
 
-          <div class="btn-group btn-group-justified">
+            <% else %>
 
-            <form action="/create_seat" method="post">
-              <!-- Hidden input for authenticity token to protect from forgery -->
-              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+            <div class="container">
+              
+              <div class="btn-group btn-group-justified">
 
-              <!-- Label and input for journey_id -->
-              <div class="form-group">
-                <input type="hidden" id="journey_id" name="journey_id" placeholder="Journey" class="form-control" value="<%= @journey.id %>">
+                <div class="btn-group">
+                  <a href="/journeys" class="btn btn-primary">
+                    <i class="fa fa-chevron-left"></i>
+                  </a>
+                </div>
+
+                <div class="btn-group">
+                  <form action="/create_seat" method="post">
+                    <!-- Hidden input for authenticity token to protect from forgery -->
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <!-- Label and input for journey_id -->
+                    <input type="hidden" name="journey_id" value="<%= @journey.id %>">
+                    <!-- Label and input for user_id -->
+                    <input type="hidden" name="user_id" value="<%= current_user.id %>">
+                    <!-- Button for form -->
+                    <button class="btn btn-success">
+                      Join
+                    </button>
+                  </form>
+                </div>
+
               </div>
 
-              <!-- Label and input for user_id -->
-              <div class="form-group">
-                <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
-              </div>
 
-              <button class="btn btn-success">
-                Take Seat
-              </button>
-
-            </form>
-
+            </div>
           </div>
         </div>
-      </body>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</body>

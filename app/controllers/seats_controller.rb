@@ -25,14 +25,14 @@ class SeatsController < ApplicationController
 
     if (Seat.where(:journey_id => @seat.journey_id).count + 1) > Journey.find_by(:id => @seat.journey_id).capacity
 
-      redirect_to("/seats/", :alert => "No capacity.")
+      redirect_to("/journyes", :alert => "No capacity.")
 
     else
 
       save_status = @seat.save
 
       if save_status == true
-        redirect_to("/seats/#{@seat.id}", :notice => "Seat created successfully.")
+        redirect_to("/journeys/#{Journey.find_by(:id => @seat.journey_id).id}", :notice => "Seat created successfully.")
       else
         render("seats/new.html.erb")
       end
