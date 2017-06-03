@@ -8,6 +8,7 @@ class SeatsController < ApplicationController
   def show
     @seat = Seat.find(params[:id])
 
+
     render("seats/show.html.erb")
   end
 
@@ -21,7 +22,7 @@ class SeatsController < ApplicationController
     @seat = Seat.new
     @seat.journey_id = params[:journey_id]
     @seat.user_id = params[:user_id]
-    
+
     if (Seat.where(:journey_id => @seat.journey_id).count + 1) > Journey.find_by(:id => @seat.journey_id).capacity
 
       redirect_to("/seats/", :alert => "No capacity.")

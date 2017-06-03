@@ -1,43 +1,148 @@
-<div class="page-header">
-  <h3>Journey #<%= @journey.id %></h3>
+<body onLoad="initialize()">
+
+  <div class="page-header">
+    <h3>Journey #<%= @journey.id %></h3>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 mb-2">
+      <dl class="dl-horizontal">
+        <dt>Origin</dt>
+        <dd><%= @journey.origin %></dd>
+
+        <dt>Destination</dt>
+        <dd><%= @journey.destination %></dd>
+
+        <dt>Capacity</dt>
+        <dd><%= @journey.capacity %></dd>
+
+        <dt>Date</dt>
+        <dd><%= @journey.date %></dd>
+
+        <dt>Price</dt>
+        <dd><%= @journey.price %></dd>
+
+        <dt>Organizer</dt>
+        <dd><%= @journey.organizer_id %></dd>
+
+        <dt> map 2 </dt>
+        <dd><%= @url %></dd>
+
+        <dt> TEST </dt>
+        <dd>
+          <%= @start %>
+          <p>
+            <%= @start_latitude %>
+          </p>
+        </dd>
+
+        <!-- <iframe width="300" height="300" frameborder="0" style="border:0"
+         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&q="+<%= @journey.origin %>
+         allowfullscreen>
+        </iframe> -->
+<!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.290286081209!2d-87.6202951845922!3d41.8866137792215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2b57d9556663%3A0xff5e8be5e425a72f!2s360+East+South+Water+Street%2C+Chicago%2C+IL+60601!5e0!3m2!1sen!2sus!4v1496465409491" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe> -->
+
+
+<div id="map_canvas" style="width:100%; height:300px"></div>
+
+<form action="#" onSubmit="calcRoute();return false;" id="routeForm">
+  <label>
+    From: <br />
+    <input type="text" id="routeStart" value="Dortmund">
+    <a href="#" class="autoLink" style="display: none;">Use current location: <span>not found</span></a>
+  </label>
+
+  <label>
+    To: <br />
+    <input type="text" id="routeEnd" value="Hagen">
+  </label>
+
+  <label><input type="radio" name="travelMode" value="DRIVING" checked /> Driving</label>
+  <label><input type="radio" name="travelMode" value="BICYCLING" /> Bicylcing</label>
+  <label><input type="radio" name="travelMode" value="TRANSIT" /> Public transport</label>
+  <label><input type="radio" name="travelMode" value="WALKING" /> Walking</label>
+
+  <input type="submit" value="Calculate route">
+
+</form>
+
+<div id="directionsPanel">
+  Enter a starting point and click "Calculate route".
 </div>
 
-<div class="row">
-  <div class="col-md-12 mb-2">
-    <dl class="dl-horizontal">
-      <dt>Origin</dt>
-      <dd><%= @journey.origin %></dd>
 
-      <dt>Destination</dt>
-      <dd><%= @journey.destination %></dd>
+      <dt> price </dt>
 
-      <dt>Capacity</dt>
-      <dd><%= @journey.capacity %></dd>
+      <dd>
 
-      <dt>Date</dt>
-      <dd><%= @journey.date %></dd>
+        <div id="lyft-web-button-parent"></div>
+        <script type="text/javascript">
+        !function(e,t,n,o,l,i,a,c,d,r,u,y,f,m,b,s){var B=t.createElement('script');B.async=!0,
+        B.onload=function(){s!==o&&(e[s]=e[o],delete e[o]),b!==l&&(e[b]=e[l],delete e[l]);
+          var n={address:d,latitude:r,longitude:u,name:y};e[s].initialize({clientId:i,clientToken:a,
+            googleApiKey:c,location:n,objectName:s,parentElement:t.body}),e[b].initialize({clientId:i,
+              clientToken:a,location:n,objectName:b,onClick:function(){return e[s].open(),!1},
+              parentElement:f,theme:m})},B.src=n,f.insertBefore(B,f.childNodes[0])}(window,document,
+                'https://cdn.lyft.com/lyft-web-sdk/1.1.2/lyftWebButton.min.js','lyftWebModal',
+                'lyftWebButton','-PoccgdT6obM',
+                'eDML1DNeun3HevxzN3xICxpWoYxwlAAzUC+wqkqxjhyFr3JekQ1XihIofv0hSduaCry3nsESGT79Te+8Yiayxv5XQqF8MRHckQJoIq84iuy+8w/RTKDxqLw=',
+                'AIzaSyAvfIZDeQLpHcFDlWKw4Ys-VoGyw2vwjxM',
+                '360 East South Water Street, Chicago, IL 60601, USA',
+                '41.8866138','-87.61810650000001','Tobias',
+                document.getElementById('lyft-web-button-parent'),
+                'multicolor','lyftWebButton','lyftWebModal'
+              );
+              </script>
 
-      <dt>Price</dt>
-      <dd><%= @journey.price %></dd>
+            </dd>
 
-      <dt>Organizer</dt>
-      <dd><%= @journey.organizer_id %></dd>
+            <dt> UBER </dt>
 
-    </dl>
+            <dd>
 
-    <div class="btn-group btn-group-justified">
-      <a href="/journeys" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
-    </div>
 
-  </div>
+              <%= array = @client.price_estimations(start_latitude: "37.7772", start_longitude: "-122.4233",
+              end_latitude: "37.7972", end_longitude: "-122.4533") %>
+
+            </dd>
+            <dt> TEST </dt>
+            <dd>
+              <%= array[1].estimate %>
+              <p>
+                <%= array[1].duration %>
+              </p>
+            </dd>
+
+
+
+            <% time = @client.time_estimations(start_latitude: "37.7772", start_longitude: "-122.4233") %>
+            <p>
+              <%= time[1].estimate
+              %>
+            </p>
+
+
+            <p>
+              <% request = @client.trip_request(product_id: "uberX", start_latitude: "37.7772", start_longitude: "-122.4233", end_latitude: "37.7972", end_longitude: "-122.4533")%>
+              <%= request %>
+            </p>
+
+          </div>
+        </dl>
+
+        <div class="btn-group btn-group-justified">
+          <a href="/journeys" class="btn btn-primary">
+            Back
+          </a>
+          <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
+            Edit
+          </a>
+          <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
+            Delete
+          </a>
+        </div>
+
+      </div>
 
       <div class="btn-group btn-group-justified">
 
@@ -61,5 +166,6 @@
 
         </form>
 
-  </div>
-</div>
+      </div>
+    </div>
+</body>

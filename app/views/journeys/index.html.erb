@@ -28,7 +28,7 @@
         <td><%= journey.capacity - journey.seats.count %></td>
         <td><%= journey.date %></td>
         <td><%= journey.price %></td>
-        <td><%= journey.organizer_id %></td>
+        <td><%= journey.organizer.email %></td>
         <td>
           <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
           <a href="/journeys/<%= journey.id %>/edit" class="btn btn-warning">Edit</a>
