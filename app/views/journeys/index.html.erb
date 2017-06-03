@@ -12,8 +12,8 @@
         <th>Origin</th>
         <th>Destination</th>
         <th>Capacity</th>
-        <th>Remaining Capacity</th>
         <th>Date</th>
+        <th>Price</th>
         <th>Price</th>
         <th>Organizer</th>
         <th>Actions</th>
@@ -24,40 +24,67 @@
       <tr>
         <td><%= journey.origin %></td>
         <td><%= journey.destination %></td>
-        <td><%= journey.capacity %></td>
         <td><%= journey.capacity - journey.seats.count %></td>
         <td><%= journey.date %></td>
         <td><%= journey.price %></td>
-        <td><%= journey.organizer.email %></td>
+        <td>
+          <% url ="https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&origin="+journey.origin+"&destination="+journey.destination+"&sensor=false".gsub(" ","+") %>
+          <%   parsed_data = JSON.parse(open(url).read) %>
+          <%   start_lat = parsed_data["routes"][0]["legs"][0]["start_location"]["lat"] %>
+          <%   start_lng = parsed_data["routes"][0]["legs"][0]["start_location"]["lng"] %>
+          <%   end_lat = parsed_data["routes"][0]["legs"][0]["end_location"]["lat"] %>
+          <%   end_lng = parsed_data["routes"][0]["legs"][0]["end_location"]["lng"]%>
+
+          <% client = Uber::Client.new do |config|
+            config.server_token  = "lFNFQ-VIhAXqiwJNY8YJ9374hP_0MUeZndHSNs3k"
+            config.client_id     = "2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi"
+            config.client_secret = "WsFaZ_JEZei9SEbgh0qEchIiSMTvR0ZLbgM-xmrQ"
+            config.sandbox       = true
+          end %>
+
+          <%=  client.price_estimations(start_latitude: start_lat, start_longitude: start_lng,
+          end_latitude: end_lat, end_longitude: end_lng)[0]["estimate"] %>
+        </td>
+        <td>
+          <%= journey.organizer.email %>
+        </td>
+
+        <% if journey.organizer_id == current_user.id %>
+
         <td>
           <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
           <a href="/journeys/<%= journey.id %>/edit" class="btn btn-warning">Edit</a>
           <a href="/delete_journey/<%= journey.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
-
-
-          <td>
-            <form action="/create_seat" method="post" class="form-inline">
-              <!-- Hidden input for authenticity token to protect from forgery -->
-              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-              <!-- Label and input for journey_id -->
-              <div class="form-group">
-                <input type="hidden" id="journey_id" name="journey_id" placeholder="Journey" class="form-control" value="<%= journey.id %>">
-              </div>
-
-              <!-- Label and input for user_id -->
-              <div class="form-group">
-                <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
-              </div>
-
-              <button class="btn btn-success">
-                Take Seat
-              </button>
-            </form>
-          </td>
         </td>
-      </tr>
+
+        <% else %>
+
+        <td>
+          <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
+          <form action="/create_seat" method="post" class="form-inline">
+            <!-- Hidden input for authenticity token to protect from forgery -->
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+            <!-- Label and input for journey_id -->
+            <div class="form-group">
+              <input type="hidden" id="journey_id" name="journey_id" placeholder="Journey" class="form-control" value="<%= journey.id %>">
+            </div>
+
+            <!-- Label and input for user_id -->
+            <div class="form-group">
+              <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+            </div>
+
+            <button class="btn btn-success">
+              Join
+            </button>
+          </form>
+        </td>
 
       <% end %>
-    </table>
-  </div>
+
+    </tr>
+
+    <% end %>
+
+  </table>
 </div>

@@ -1,7 +1,8 @@
 {
   "name": "booth_pool",
   "scripts": {
-  },
+  "postdeploy": "bundle exec rails db:migrate && bundle exec rails db:seed"
+},
   "env": {
     "LANG": {
       "required": true
