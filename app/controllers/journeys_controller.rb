@@ -44,13 +44,12 @@ class JourneysController < ApplicationController
     end_latitude: @end_lat, end_longitude: @end_lng)
 
     # UberX
-    @uberx_price = @uber[0]["estimate"]
+    @uberx_price = @uber[1]["estimate"]
 
     # UberPool
-    @uberpool_price = @uber[1]["estimate"]
+    @uberpool_price = @uber[0]["estimate"]
 
     render("journeys/show.html.erb")
-
   end
 
   def new
