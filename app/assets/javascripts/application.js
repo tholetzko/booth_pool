@@ -13,4 +13,14 @@
 //= require rails-ujs
 //= require turbolinks
 //= require_tree .
-//= require bootstrap-datepicker
+//= require moment
+//= require bootstrap-datetimepicker
+
+(function() {
+  'use strict';
+  $(document).ready(function() {
+    $('.timestring').each(function() {
+      this.textContent = moment(this.textContent).format('lll');
+    });
+  });
+})();

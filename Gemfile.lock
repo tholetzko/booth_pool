@@ -49,8 +49,8 @@ GEM
     arel (8.0.0)
     bcrypt (3.1.11-x86-mingw32)
     bindex (0.5.0)
-    bootstrap-datepicker-rails (1.6.4.1)
-      railties (>= 3.0)
+    bootstrap3-datetimepicker-rails (4.17.47)
+      momentjs-rails (>= 2.8.1)
     builder (3.2.3)
     byebug (9.0.6)
     capybara (2.14.0)
@@ -102,6 +102,8 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.10.2)
+    momentjs-rails (2.17.1)
+      railties (>= 3.1)
     multi_json (1.12.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
@@ -205,13 +207,14 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt
-  bootstrap-datepicker-rails
+  bootstrap3-datetimepicker-rails (~> 4.17.47)
   byebug
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   devise
   geocoder
   jbuilder (~> 2.5)
+  momentjs-rails (>= 2.9.0)
   pg
   puma (~> 3.7)
   rails (~> 5.1.1)
