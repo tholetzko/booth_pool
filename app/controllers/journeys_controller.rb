@@ -21,26 +21,33 @@ class JourneysController < ApplicationController
 
   def show
     @journey = Journey.find(params[:id])
-    @journey_origin = @journey.origin
-    @journey_destination = @journey.destination
+    @origin = @journey.origin
+    @destination = @journey.destination
 
-    url ="https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&origin="+@journey_origin+"&destination="+@journey_destination+"&sensor=false".gsub(" ","+")
+    url ="https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&origin="+@origin+"&destination="+@destination+"&sensor=false".gsub(" ","+")
     parsed_data = JSON.parse(open(url).read)
+    @start_lat = parsed_data["routes"][0]["legs"][0]["start_location"]["lat"]
+    @start_lng = parsed_data["routes"][0]["legs"][0]["start_location"]["lng"]
+    @end_lat = parsed_data["routes"][0]["legs"][0]["end_location"]["lat"]
+    @end_lng = parsed_data["routes"][0]["legs"][0]["end_location"]["lng"]
 
-    @start = parsed_data["routes"][0]["legs"][0]["start_address"]
-    @start_latitude = parsed_data["routes"][0]["legs"][0]["start_location"]
-    @start_longitude = parsed_data["routes"][0]["legs"][0]["start_location"]["lng"]
-
-    @end = parsed_data["routes"][0]["legs"][0]["end_address"]
-    @end_latitude = parsed_data["routes"][0]["legs"][0]["end_location"]
-    @end_longitude = parsed_data["routes"][0]["legs"][0]["end_address"]
-
-    @client = Uber::Client.new do |config|
+    # Uber API
+    client = Uber::Client.new do |config|
       config.server_token  = "lFNFQ-VIhAXqiwJNY8YJ9374hP_0MUeZndHSNs3k"
       config.client_id     = "2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi"
       config.client_secret = "WsFaZ_JEZei9SEbgh0qEchIiSMTvR0ZLbgM-xmrQ"
       config.sandbox       = true
     end
+
+    # Uber coordinates
+    @uber = client.price_estimations(start_latitude: @start_lat, start_longitude: @start_lng,
+    end_latitude: @end_lat, end_longitude: @end_lng)
+
+    # UberX
+    @uberx_price = @uber[0]["estimate"]
+
+    # UberPool
+    @uberpool_price = @uber[1]["estimate"]
 
     render("journeys/show.html.erb")
 

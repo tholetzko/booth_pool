@@ -15,6 +15,7 @@
         <th>Remaining Capacity</th>
         <th>Date</th>
         <th>Price</th>
+        <th>Price</th>
         <th>Organizer</th>
         <th>Actions</th>
 
@@ -28,6 +29,26 @@
         <td><%= journey.capacity - journey.seats.count %></td>
         <td><%= journey.date %></td>
         <td><%= journey.price %></td>
+        <td>
+          <% url ="https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&origin="+journey.origin+"&destination="+journey.destination+"&sensor=false".gsub(" ","+") %>
+          <%   parsed_data = JSON.parse(open(url).read) %>
+          <%   start_lat = parsed_data["routes"][0]["legs"][0]["start_location"]["lat"] %>
+          <%   start_lng = parsed_data["routes"][0]["legs"][0]["start_location"]["lng"] %>
+          <%   end_lat = parsed_data["routes"][0]["legs"][0]["end_location"]["lat"] %>
+          <%   end_lng = parsed_data["routes"][0]["legs"][0]["end_location"]["lng"]%>
+
+          <% client = Uber::Client.new do |config|
+            config.server_token  = "lFNFQ-VIhAXqiwJNY8YJ9374hP_0MUeZndHSNs3k"
+            config.client_id     = "2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi"
+            config.client_secret = "WsFaZ_JEZei9SEbgh0qEchIiSMTvR0ZLbgM-xmrQ"
+            config.sandbox       = true
+          end %>
+
+          <%=  client.price_estimations(start_latitude: start_lat, start_longitude: start_lng,
+          end_latitude: end_lat, end_longitude: end_lng)[0]["estimate"] %>
+
+
+        </td>
         <td><%= journey.organizer.email %></td>
         <td>
           <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
