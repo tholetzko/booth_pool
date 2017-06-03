@@ -2,6 +2,9 @@ Rails.application.routes.draw do
 
 devise_for :users
 root to: 'journeys#index'
+get "/test", :controller => "journeys", :action => "test"
+get "/test2", :controller => "journeys", :action => "test2"
+
 
   # Routes for the Seat resource:
   # CREATE

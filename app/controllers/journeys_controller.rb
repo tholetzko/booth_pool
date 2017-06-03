@@ -1,9 +1,17 @@
-require 'open-uri'
-require 'json'
-
-
 class JourneysController < ApplicationController
+  require 'open-uri'
+  require 'json'
 
+  def test
+
+    render("journeys/test.html.erb")
+  end
+
+
+  def test2
+
+    render("journeys/test2.html.erb")
+  end
 
   def index
     @journeys = Journey.all
@@ -16,17 +24,16 @@ class JourneysController < ApplicationController
     @journey_origin = @journey.origin
     @journey_destination = @journey.destination
 
-
-    url ="https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyB_nAWVr-18Oi_XoadzVHmNT2vevvJfev4&origin="+@journey_origin+"&destination="+@journey_destination+"&sensor=false".gsub(" ","+")
-
+    url ="https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&origin="+@journey_origin+"&destination="+@journey_destination+"&sensor=false".gsub(" ","+")
     parsed_data = JSON.parse(open(url).read)
 
     @start = parsed_data["routes"][0]["legs"][0]["start_address"]
+    @start_latitude = parsed_data["routes"][0]["legs"][0]["start_location"]
+    @start_longitude = parsed_data["routes"][0]["legs"][0]["start_location"]["lng"]
+
     @end = parsed_data["routes"][0]["legs"][0]["end_address"]
-    # @latitude = parsed_data["routes"]["legs"]["distance"]
-
-
-
+    @end_latitude = parsed_data["routes"][0]["legs"][0]["end_location"]
+    @end_longitude = parsed_data["routes"][0]["legs"][0]["end_address"]
 
     @client = Uber::Client.new do |config|
       config.server_token  = "lFNFQ-VIhAXqiwJNY8YJ9374hP_0MUeZndHSNs3k"
@@ -36,6 +43,7 @@ class JourneysController < ApplicationController
     end
 
     render("journeys/show.html.erb")
+
   end
 
   def new
