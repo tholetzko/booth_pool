@@ -36,6 +36,16 @@
         <input type="text" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= @comment.user_id %>">
       </div>
 
+
+      <!-- Label and input for body -->
+      <div class="form-group">
+        <label for="body" class="control-label">
+          Body
+        </label>
+
+        <input type="text" id="body" name="body" placeholder="Add a comment..." class="form-control" value="<%= @comment.body %>">
+      </div>
+
       <button class="btn btn-success">
         Create Comment
       </button>

@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170601210718) do
+ActiveRecord::Schema.define(version: 20170604014742) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "journey_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "body"
   end
 
   create_table "journeys", force: :cascade do |t|
