@@ -11,13 +11,17 @@
       <tr>
         <th>Journey</th>
         <th>User</th>
+        <th>Body</th>
         <th>Actions</th>
+
       </tr>
 
       <% @comments.each do |comment| %>
       <tr>
         <td><%= comment.journey_id %></td>
         <td><%= comment.user_id %></td>
+        <td><%= comment.body %></td>
+
         <td>
           <a href="/comments/<%= comment.id %>" class="btn btn-primary">Show</a>
           <a href="/comments/<%= comment.id %>/edit" class="btn btn-warning">Edit</a>

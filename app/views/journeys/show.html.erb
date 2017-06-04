@@ -149,7 +149,7 @@
                     <%= time_ago_in_words(comment.created_at) %>ago
                   </small>
                 </h6>
-                TEXT
+                <%= comment.body %>
               </div>
             </li>
 
@@ -158,12 +158,11 @@
             <li class="media">
 
               <div class="media-body">
+
                 <form action="/create_comment" method="post">
                   <!-- Hidden input for authenticity token to protect from forgery -->
                   <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-
                   <input type="hidden" name="journey_id" value="<%= @journey.id %>">
-
                   <input type="hidden" name="user_id" value="<%= current_user.id %>">
 
                   <!-- Label and input for body -->
@@ -173,7 +172,7 @@
                     </label>
 
                     <div class="input-group">
-                      <input type="text" id="body" name="body" class="form-control" placeholder="Add a comment..." required>
+                      <input type="text" id="body" name="body" placeholder="Add a comment..." class="form-control" required>
 
                       <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">
@@ -183,8 +182,11 @@
                     </div>
                   </div>
                 </form>
+
               </div>
+
             </li>
+
           </ul>
 
           <p>
