@@ -22,7 +22,7 @@
           <dd><%= @journey.destination %></dd>
 
           <dt>Capacity</dt>
-          <dd><%= @journey.capacity %></dd>
+          <dd><%= @journey.capacity - @journey.seats.count %></dd>
 
           <dt>Date</dt>
           <dd class='timestring'><%= @journey.date %></dd>
@@ -30,8 +30,18 @@
           <dt>Organizer</dt>
           <dd><%= @journey.organizer.email %></dd>
 
+          <dt>Estimated duration</dt>
+          <dd><%= (@uberx_duration.to_i / 60) %> minutes</dd>
+
           <dt>Estimated price</dt>
           <dd><%= @uberx_price %></dd>
+
+          <dt>Rider</dt>
+          <% @journey.users.each do |seat| %>
+          <dd>
+            <%= seat.try(:username) %>
+          </dd>
+          <% end %>
         </dl>
 
         <!-- Map -->
@@ -122,66 +132,126 @@
         }
         </script>
 
-      
+        <!-- Comments -->
 
-        <!-- Buttons -->
-        <% if @journey.organizer_id == current_user.id %>
+        <p>
 
-        <div class="btn-group btn-group-justified">
+          <!-- Panel Body Comments -->
 
-          <div class="btn-group">
-            <a href="/journeys" class="btn btn-primary">
-              <i class="fa fa-chevron-left"></i>
-            </a>
-          </div>
+          <% @journey.comments.each do |comment| %>
 
-          <div class="btn-group">
-            <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-          </div>
+          <ul class="media-list">
+            <li class="media">
+              <div class="media-body">
+                <h6 class="media-heading">
+                  <a href="/users/<%= comment.user_id %>"><%= comment.user.username %></a>
+                  <small>
+                    <%= time_ago_in_words(comment.created_at) %>ago
+                  </small>
+                </h6>
+                TEXT
+              </div>
+            </li>
 
-          <div class="btn-group">
-            <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
+            <% end %>
 
-        </div>
+            <li class="media">
 
-        <% else %>
+              <div class="media-body">
+                <form action="/create_comment" method="post">
+                  <!-- Hidden input for authenticity token to protect from forgery -->
+                  <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-        <div class="btn-group btn-group-justified">
+                  <input type="hidden" name="journey_id" value="<%= @journey.id %>">
 
-          <div class="btn-group">
-            <a href="/journeys" class="btn btn-primary">
-              <i class="fa fa-chevron-left"></i>
-            </a>
-          </div>
+                  <input type="hidden" name="user_id" value="<%= current_user.id %>">
 
-          <div class="btn-group">
-            <form action="/create_seat" method="post">
-              <!-- Hidden input for authenticity token to protect from forgery -->
-              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-              <!-- Label and input for journey_id -->
-              <input type="hidden" name="journey_id" value="<%= @journey.id %>">
-              <!-- Label and input for user_id -->
-              <input type="hidden" name="user_id" value="<%= current_user.id %>">
-              <!-- Button for form -->
-              <button class="btn btn-success">
-                Join
-              </button>
-            </form>
+                  <!-- Label and input for body -->
+                  <div class="form-group">
+                    <label for="body" class="sr-only">
+                      Body
+                    </label>
+
+                    <div class="input-group">
+                      <input type="text" id="body" name="body" class="form-control" placeholder="Add a comment..." required>
+
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                          <i class="fa fa-commenting-o"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+          </ul>
+
+          <p>
+
+
+
+
+
+
+            <!-- Buttons -->
+            <% if @journey.organizer_id == current_user.id %>
+
+            <div class="btn-group btn-group-justified">
+
+              <div class="btn-group">
+                <a href="/journeys" class="btn btn-primary">
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </div>
+
+              <div class="btn-group">
+                <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
+                  <i class="fa fa-edit"></i>
+                </a>
+              </div>
+
+              <div class="btn-group">
+                <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
+                  <i class="fa fa-trash-o"></i>
+                </a>
+              </div>
+
+            </div>
+
+            <% else %>
+
+            <div class="btn-group btn-group-justified">
+
+              <div class="btn-group">
+                <a href="/journeys" class="btn btn-primary">
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </div>
+
+              <div class="btn-group">
+                <form action="/create_seat" method="post">
+                  <!-- Hidden input for authenticity token to protect from forgery -->
+                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                  <!-- Label and input for journey_id -->
+                  <input type="hidden" name="journey_id" value="<%= @journey.id %>">
+                  <!-- Label and input for user_id -->
+                  <input type="hidden" name="user_id" value="<%= current_user.id %>">
+                  <!-- Button for form -->
+                  <button class="btn btn-success">
+                    Join
+                  </button>
+                </form>
+              </div>
+
+            </div>
+
           </div>
 
         </div>
 
       </div>
 
+      <% end %>
+
     </div>
-
-  </div>
-
-  <% end %>
-
-</div>

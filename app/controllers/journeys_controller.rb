@@ -21,6 +21,7 @@ class JourneysController < ApplicationController
 
   def show
     @journey = Journey.find(params[:id])
+    @journeys = Journey.all
     @origin = @journey.origin
     @destination = @journey.destination
 
@@ -45,6 +46,7 @@ class JourneysController < ApplicationController
 
     # UberX
     @uberx_price = @uber[1]["estimate"]
+    @uberx_duration = @uber[1]["duration"]
 
     # UberPool
     @uberpool_price = @uber[0]["estimate"]
