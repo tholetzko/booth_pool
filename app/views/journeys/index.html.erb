@@ -5,54 +5,57 @@
   </h1>
 </div>
 
-<button class="btn btn-default btn-block" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-  Show filter
-</button>
+<div class="row">
 
-<div class="collapse" id="collapseExample">
+  <div class="col-md-12">
 
-  <div class="form-group">
+    <div class="collapse" id="journey_form">
 
-    <%= search_form_for @q do |f| %>
+      <p class="lead">Narrow results:</p>
 
-    <p class="lead">Narrow results:</p>
+      <%= search_form_for @q do |f| %>
 
-    <div class="form-group">
-      <%= f.label :origin_eq, "Origin" %>
-      <%= f.select :origin_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Origin" }, :class => "form-control" %>
-    </div>
+      <div class="form-group">
+        <%= f.label :origin_eq, "Origin" %>
+        <%= f.select :origin_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Origin" }, :class => "form-control" %>
+      </div>
 
-    <div class="form-group">
-      <%= f.label :destination_eq, "Destination" %>
-      <%= f.select :destination_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Destination" }, :class => "form-control" %>
-    </div>
+      <div class="form-group">
+        <%= f.label :destination_eq, "Destination" %>
+        <%= f.select :destination_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Destination" }, :class => "form-control" %>
+      </div>
 
-    <div class="form-group">
-      <%= f.label :date_eq, "Destination" %>
-      <%= f.select :date_eq, options_from_collection_for_select(Journey.all, :date, :date, @q.date_eq), { :prompt => "Choose Destination" }, :class => "form-control" %>
-    </div>
+      <div class="form-group">
+        <%= f.label :date_eq, "Destination" %>
+        <%= f.select :date_eq, options_from_collection_for_select(Journey.all, :date, :date, @q.date_eq), { :prompt => "Choose Destination" }, :class => "form-control" %>
+      </div>
 
-    <div class="form-group">
-      <%= f.label :date_gteq, "Released after" %>
-      <%= f.text_field :date_gteq, :class => "form-control", :placeholder => "Year greater than or equal to" %>
-    </div>
+      <div class="form-group">
+        <%= f.label :date_gteq, "Released after" %>
+        <%= f.text_field :date_gteq, :class => "form-control", :placeholder => "Year greater than or equal to" %>
+      </div>
 
-    <div class="form-group">
-      <%= f.label :date_lteq, "Released before" %>
-      <%= f.text_field :date_lteq, :class => "form-control", :placeholder => "Year less than or equal to" %>
-    </div>
+      <div class="form-group">
+        <%= f.label :date_lteq, "Released before" %>
+        <%= f.text_field :date_lteq, :class => "form-control", :placeholder => "Year less than or equal to" %>
+      </div>
 
-    <%= f.submit :class => "btn btn-primary btn-block" %>
+      <%= f.submit :class => "btn btn-primary btn-block mb-1" %>
 
-    <a href="/journeys" class="btn btn-default btn-block">
-      Clear filters</a>
+      <a href="/journeys" class="btn btn-default btn-block mb-1">
+        Clear filters</a>
 
-      <% end %>
+        <% end %>
+        
+      </div>
+
+      <a class="btn btn-primary btn-block mb-1" data-toggle="collapse" href="#journey_form" >
+        Show Filters
+      </a>
 
     </div>
 
   </div>
-
 
   <div class="row">
     <div class="col-md-12">
@@ -125,3 +128,4 @@
       </table>
     </div>
   </div>
+</div>
