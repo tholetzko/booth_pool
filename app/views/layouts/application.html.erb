@@ -10,6 +10,11 @@
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/bootstrap.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
   <style>
   /* Only necessary if you are using navbar-fixed-top */
 
@@ -25,10 +30,6 @@
 </head>
 
 <body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
   <script type="text/javascript">
   (function() {
     'use strict';
@@ -65,67 +66,67 @@
 
             <li>
               <a href="/journeys">
-              <i class="glyphicon glyphicon-calendar"></i>
-            Past Journeys</a>
-          </li>
-          <li><a href="/"></a></li>
-          <li><a href="/seats">Seats</a></li>
-          <li><a href="/comments">Comments</a></li>
-          <li><a href="/rails/info">Sitemap</a></li>
-        </ul>
+                <i class="glyphicon glyphicon-calendar"></i>
+                Past Journeys</a>
+              </li>
+              <li><a href="/"></a></li>
+              <li><a href="/seats">Seats</a></li>
+              <li><a href="/comments">Comments</a></li>
+              <li><a href="/rails/info">Sitemap</a></li>
+            </ul>
 
-        <ul class="nav navbar-nav navbar-right">
-          <% if current_user !=nil  %>
+            <ul class="nav navbar-nav navbar-right">
+              <% if current_user !=nil  %>
 
-          <li>
-            <a href="/users/edit">
-              <i class="fa fa-fw fa-user"></i>
-              Edit <%= current_user.username %>
-            </a>
-          </li>
+              <li>
+                <a href="/users/edit">
+                  <i class="fa fa-fw fa-user"></i>
+                  Edit <%= current_user.username %>
+                </a>
+              </li>
 
-          <li>
-            <a href="/users/sign_out" data-method="delete" rel="nofollow">
-              <i class="fa fa-fw fa-sign-out"></i>
-              Sign Out
-            </a>
-          </li>
-          <% else %>
-          <li><a href="/users/sign_up">Sign-up</a></li>
-          <li><a href="/users/sign_in">Sign-in</a></li>
-          <% end %>
+              <li>
+                <a href="/users/sign_out" data-method="delete" rel="nofollow">
+                  <i class="fa fa-fw fa-sign-out"></i>
+                  Sign Out
+                </a>
+              </li>
+              <% else %>
+              <li><a href="/users/sign_up">Sign-up</a></li>
+              <li><a href="/users/sign_in">Sign-in</a></li>
+              <% end %>
 
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div>
-  </nav>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div>
+      </nav>
 
-  <div class="container">
-    <% if notice.present? %>
-    <div class="alert alert-dismissable alert-success">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <%= notice %>
-    </div>
-    <% end %>
+      <div class="container">
+        <% if notice.present? %>
+        <div class="alert alert-dismissable alert-success">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <%= notice %>
+        </div>
+        <% end %>
 
-    <% if alert.present? %>
-    <div class="alert alert-dismissable alert-warning">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <%= alert %>
-    </div>
-    <% end %>
+        <% if alert.present? %>
+        <div class="alert alert-dismissable alert-warning">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <%= alert %>
+        </div>
+        <% end %>
 
-    <%= yield %>
+        <%= yield %>
 
-  </div>
-  <script type="text/javascript">
-  initialize();
-  </script>
+      </div>
+      <script type="text/javascript">
+      initialize();
+      </script>
 
-  <script type="text/javascript">
-  calcRoute();
-  </script>
+      <script type="text/javascript">
+      calcRoute();
+      </script>
 
-</body>
+    </body>
 
-</html>
+    </html>

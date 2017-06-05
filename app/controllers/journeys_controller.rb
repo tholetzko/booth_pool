@@ -14,8 +14,8 @@ class JourneysController < ApplicationController
   end
 
   def index
-    @journeys = Journey.all
-
+    @q = Journey.ransack(params[:q])
+    @journeys = @q.result
     render("journeys/index.html.erb")
   end
 
