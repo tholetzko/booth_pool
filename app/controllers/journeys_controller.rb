@@ -2,17 +2,6 @@ class JourneysController < ApplicationController
   require 'open-uri'
   require 'json'
 
-  def test
-
-    render("journeys/test.html.erb")
-  end
-
-
-  def test2
-
-    render("journeys/test2.html.erb")
-  end
-
   def index
     @q = Journey.ransack(params[:q])
     @journeys = @q.result
@@ -58,10 +47,25 @@ class JourneysController < ApplicationController
     uberpool_estimate = uber.select { |x| x[:display_name] == 'uberPOOL' }.map { |u| u[:estimate] }
     @uberpool_estimate = uberpool_estimate.to_s.gsub(/\[|\]/,"").gsub('"',"")
 
-    # Lyft API
-
-
-    
+    # Lyft API - **not working**
+    # client = Lyft::Client.new(
+    # client_id: '-PoccgdT6obM',
+    # client_secret: 'twIt8_zgBpB9mI3o_AVLFPR3gSgtbJUs',
+    # debug_output: STDOUT,
+    # use_sandbox: true
+    # )
+    #
+    # # Public token
+    # client.oauth.retrieve_access_token
+    #
+    # # When using oauth.
+    # client.oauth.retrieve_access_token authorization_code: 'auth_code'
+    #
+    # client.availability.cost access_token: 'eDML1DNeun3HevxzN3xICxpWoYxwlAAzUC+wqkqxjhyFr3JekQ1XihIofv0hSduaCry3nsESGT79Te+8Yiayxv5XQqF8MRHckQJoIq84iuy+8w/RTKDxqLw='
+    # start_lat: 37.7772,
+    # start_lng: -122.4233,
+    # end_lat: 37.7972,
+    # end_lng: -122.4533
 
     render("journeys/show.html.erb")
   end
