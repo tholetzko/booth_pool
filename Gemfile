@@ -5,16 +5,18 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+# Basic gems to get started
 gem 'devise'
 gem "starter_generators", :git => "https://github.com/raghubetina/starter_generators"
 gem 'bcrypt', platforms: :ruby
+
+# Additional gems for app
 gem 'uber-ruby', require: 'uber'
 gem 'rlyft'
 gem 'geocoder'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 gem 'ransack'
-
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'

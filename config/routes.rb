@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
 
-devise_for :users
-root to: 'journeys#index'
-get "/test", :controller => "journeys", :action => "test"
-get "/test2", :controller => "journeys", :action => "test2"
+  devise_for :users
+  root to: 'journeys#index'
+
+
+  # Routes for the User resource:
+  get "/users", :controller => "users", :action => "index"
+  get "/users/:id", :controller => "users", :action => "show"
+  get "/users/edit", :controller => "users", :action => "edit"
+  get "/my_likes", :controller => "likes", :action => "index"
 
 
   # Routes for the Seat resource:

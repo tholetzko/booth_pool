@@ -20,11 +20,12 @@ class JourneysController < ApplicationController
   end
 
   def show
-    @journey = Journey.find(params[:id])
     @journeys = Journey.all
+    @journey = Journey.find(params[:id])
     @origin = @journey.origin
     @destination = @journey.destination
 
+    # Parse geocoordinates
     url ="https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&origin="+@origin+"&destination="+@destination+"&sensor=false".gsub(" ","+")
     parsed_data = JSON.parse(open(url).read)
     @start_lat = parsed_data["routes"][0]["legs"][0]["start_location"]["lat"]
@@ -40,15 +41,8 @@ class JourneysController < ApplicationController
       config.sandbox       = false
     end
 
-    # Uber coordinates
     uber = client.price_estimations(start_latitude: @start_lat, start_longitude: @start_lng,
     end_latitude: @end_lat, end_longitude: @end_lng)
-
-    # uber_selection = uber.map do |hash|
-    #   { display_name: hash[:display_name], estimate: hash[:estimate], duration: hash[:duration] }
-    # end
-
-    @test = uber
 
     uber_duration = uber.select { |x| x[:display_name] == 'uberX' }.map { |u| u[:duration] }
     @uber_duration = uber_duration.to_s.gsub(/\[|\]/,"").gsub('"',"")
@@ -63,6 +57,11 @@ class JourneysController < ApplicationController
     # UberPOOL
     uberpool_estimate = uber.select { |x| x[:display_name] == 'uberPOOL' }.map { |u| u[:estimate] }
     @uberpool_estimate = uberpool_estimate.to_s.gsub(/\[|\]/,"").gsub('"',"")
+
+    # Lyft API
+
+
+    
 
     render("journeys/show.html.erb")
   end
