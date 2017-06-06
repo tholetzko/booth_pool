@@ -30,11 +30,17 @@
           <dt>Organizer</dt>
           <dd><%= @journey.organizer.email %></dd>
 
-          <dt>Estimated duration</dt>
-          <dd><%= (@uberx_duration.to_i / 60) %> minutes</dd>
+          <dt>Duration</dt>
+          <dd><%= (@uber_duration.to_i / 60) %> minutes</dd>
 
-          <dt>Estimated price</dt>
-          <dd><%= @uberx_price %></dd>
+          <dt>Distance</dt>
+          <dd><%= (@uber_distance.to_i) %> miles</dd>
+
+          <dt>Price UberX</dt>
+          <dd><%= @uberx_estimate %></dd>
+
+          <dt>Price uberPOOL</dt>
+          <dd><%= @uberpool_estimate %></dd>
 
           <dt>Rider</dt>
           <% @journey.users.each do |seat| %>

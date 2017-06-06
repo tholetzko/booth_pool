@@ -37,19 +37,32 @@ class JourneysController < ApplicationController
       config.server_token  = "lFNFQ-VIhAXqiwJNY8YJ9374hP_0MUeZndHSNs3k"
       config.client_id     = "2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi"
       config.client_secret = "WsFaZ_JEZei9SEbgh0qEchIiSMTvR0ZLbgM-xmrQ"
-      config.sandbox       = true
+      config.sandbox       = false
     end
 
     # Uber coordinates
-    @uber = client.price_estimations(start_latitude: @start_lat, start_longitude: @start_lng,
+    uber = client.price_estimations(start_latitude: @start_lat, start_longitude: @start_lng,
     end_latitude: @end_lat, end_longitude: @end_lng)
 
-    # UberX
-    @uberx_price = @uber[1]["estimate"]
-    @uberx_duration = @uber[1]["duration"]
+    # uber_selection = uber.map do |hash|
+    #   { display_name: hash[:display_name], estimate: hash[:estimate], duration: hash[:duration] }
+    # end
 
-    # UberPool
-    @uberpool_price = @uber[0]["estimate"]
+    @test = uber
+
+    uber_duration = uber.select { |x| x[:display_name] == 'uberX' }.map { |u| u[:duration] }
+    @uber_duration = uber_duration.to_s.gsub(/\[|\]/,"").gsub('"',"")
+
+    uber_distance = uber.select { |x| x[:display_name] == 'uberX' }.map { |u| u[:distance] }
+    @uber_distance = uber_distance.to_s.gsub(/\[|\]/,"").gsub('"',"")
+
+    # Uber X
+    uberx_estimate = uber.select { |x| x[:display_name] == 'uberX' }.map { |u| u[:estimate] }
+    @uberx_estimate = uberx_estimate.to_s.gsub(/\[|\]/,"").gsub('"',"")
+
+    # UberPOOL
+    uberpool_estimate = uber.select { |x| x[:display_name] == 'uberPOOL' }.map { |u| u[:estimate] }
+    @uberpool_estimate = uberpool_estimate.to_s.gsub(/\[|\]/,"").gsub('"',"")
 
     render("journeys/show.html.erb")
   end
