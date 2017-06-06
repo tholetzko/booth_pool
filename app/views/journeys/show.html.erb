@@ -1,164 +1,163 @@
 <div class="row">
-
   <div class="col-md-8 col-md-offset-2">
 
-    <div class="panel panel-default">
+    <!-- Main panel -->
+    <div class="panel panel-primary">
 
+      <!-- Main panel heading -->
       <div class="panel-heading">
-
         <h3 class="panel-title">
           Journey #<%= @journey.id %>
         </h3>
-
       </div>
 
+      <!-- Main panel body -->
       <div class="panel-body">
-        <!-- Information about journey -->
-        <dl class="dl-horizontal">
-          <dt>Origin</dt>
-          <dd><%= @journey.origin %></dd>
-
-          <dt>Destination</dt>
-          <dd><%= @journey.destination %></dd>
-
-          <dt>Capacity</dt>
-          <dd><%= @journey.capacity - @journey.seats.count %></dd>
-
-          <dt>Date</dt>
-          <dd class='timestring'><%= @journey.date %></dd>
-
-          <dt>Organizer</dt>
-          <dd><%= @journey.organizer.email %></dd>
-
-          <dt>Estimated duration</dt>
-          <dd><%= (@uberx_duration.to_i / 60) %> minutes</dd>
-
-          <dt>Estimated price</dt>
-          <dd><%= @uberx_price %></dd>
-
-          <dt>Rider</dt>
-          <% @journey.users.each do |seat| %>
-          <dd>
-            <%= seat.try(:username) %>
-          </dd>
-          <% end %>
-        </dl>
-
-        <!-- Map -->
-        <div id="map_canvas" style="width:100%; height:300px">
+        <div id="map_canvas" style="width:100%; height:200px">
         </div>
 
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&sensor=false">
-        </script>
+        <p> </p>
 
-        <script type="text/javascript">
+        <!-- Sub-panel for trip information -->
+        <div class="panel panel-default">
 
-        var directionDisplay;
-        var directionsService = new google.maps.DirectionsService();
-        var geocoder = new google.maps.Geocoder();
-        var map;
+          <!-- Sub-panel Header -->
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              Information
+            </h4>
+          </div>
 
-        function initialize() {
-          directionsDisplay = new google.maps.DirectionsRenderer();
-          // set the default center of the map
-          var latlng = new google.maps.LatLng(41.7891278,-87.5964067);
+          <!-- Sub-panel Body -->
+          <div class="panel-body">
 
-          // set route options (draggable means you can alter/drag the route in the map)
-          var rendererOptions = { draggable: true };
-          directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+            <!-- Map -->
 
-          // set the display options for the map
-          var myOptions = {
-            zoom: 14,
-            center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            mapTypeControl: false
-          };
+            <p></p>
 
-          // add the map to the map placeholder
-          map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
-          // bind the map to the directions
-          directionsDisplay.setMap(map);
-          // start the geolocation API
-          if (navigator.geolocation) {
-            // when geolocation is available on your device, run this function
-            navigator.geolocation.getCurrentPosition(foundYou, notFound);
-          } else {
-            // when no geolocation is available, alert this message
-            alert('Geolocation not supported or not enabled.');
-          }
-        };
+            <!-- Journey information             -->
+            <dl class="dl-horizontal">
+              <dt>Origin</dt>
+              <dd><%= @journey.origin %></dd>
 
-        function notFound(msg) {
-          alert('Could not find your location :(')
-        };
+              <dt>Destination</dt>
+              <dd><%= @journey.destination %></dd>
 
-        function calcRoute() {
-          var start = "<%= @journey.origin %>";
-          var end = "<%= @journey.destination %>";
-          // compose a array with options for the directions/route request
-          var request = {
-            origin:start,
-            destination:end,
-            travelMode: 'DRIVING'
-          };
+              <dt>Date</dt>
+              <dd class='timestring'><%= @journey.date %></dd>
 
-          // call the directions API
-          directionsService.route(request, function(response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-              // directions returned by the API, clear the directions panel before adding new directions
-              $('#directionsPanel').empty();
-              // display the direction details in the container
-              directionsDisplay.setDirections(response);
-            } else {
-              // alert an error message when the route could nog be calculated.
-              if (status == 'ZERO_RESULTS') {
-                alert('No route could be found between the origin and destination.');
-              } else if (status == 'UNKNOWN_ERROR') {
-                alert('A directions request could not be processed due to a server error. The request may succeed if you try again.');
-              } else if (status == 'REQUEST_DENIED') {
-                alert('This webpage is not allowed to use the directions service.');
-              } else if (status == 'OVER_QUERY_LIMIT') {
-                alert('The webpage has gone over the requests limit in too short a period of time.');
-              } else if (status == 'NOT_FOUND') {
-                alert('At least one of the origin, destination, or waypoints could not be geocoded.');
-              } else if (status == 'INVALID_REQUEST') {
-                alert('The DirectionsRequest provided was invalid.');
-              } else {
-                alert("There was an unknown error in your request. Requeststatus: nn"+status);
-              }
-            }
-          });
-        }
-        </script>
+              <dt>Duration</dt>
+              <dd><%= (@uber_duration.to_i / 60) %> minutes</dd>
 
-        <!-- Comments -->
+              <dt>Price UberX</dt>
+              <dd><%= @uberx_estimate %></dd>
 
-        <p>
+              <dt>Price uberPOOL</dt>
+              <dd><%= @uberpool_estimate %></dd>
+            </dl>
 
-          <!-- Panel Body Comments -->
+            <a class="btn btn-primary" href="https://m.uber.com/ul/?action=setPickup&client_id=2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi&pickup[formatted_address]=360%20East%20South%20Water%20Street%2C%20Chicago%2C%20IL%2C%20United%20States&pickup[latitude]=41.886693&pickup[longitude]=-87.617982&dropoff[formatted_address]=Chicago%20Booth%20Harper%20Center%2C%20South%20Woodlawn%20Avenue%2C%20Chicago%2C%20IL%2C%20United%20States&dropoff[latitude]=41.789137&dropoff[longitude]=-87.595455" target="_blank">
+              <i class="fa fa-car" aria-hidden="true"></i>
+                Request Uber
+            </a>
+            
+          </div>
+        </div>
 
-          <% @journey.comments.each do |comment| %>
+        <!-- Sub-panel for passengers -->
+        <div class="panel panel-default">
 
-          <ul class="media-list">
-            <li class="media">
-              <div class="media-body">
-                <h6 class="media-heading">
-                  <a href="/users/<%= comment.user_id %>"><%= comment.user.username %></a>
-                  <small>
-                    <%= time_ago_in_words(comment.created_at) %>ago
-                  </small>
-                </h6>
-                <%= comment.body %>
-              </div>
-            </li>
+          <!-- Sub-panel header -->
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              Passengers
+            </h4>
+          </div>
 
-            <% end %>
+          <!-- Sub-panel body -->
+          <div class="panel-body">
 
-            <li class="media">
+            <!-- Media list -->
+            <ul class="media-list">
 
-              <div class="media-body">
+              <!-- Organizer element -->
+              <li class="media">
+                <div class="media-body">
+                  <h5 class="media-heading">
+                    <a href="/users/<%= @journey.organizer.id %>">
+                      <%= @journey.organizer.username %> (Organizer)
+                    </a>
+                    <small style="float: right; font-style: italic">
+                      created journey <%= time_ago_in_words(@journey.created_at) %> ago
+                    </small>
+                  </h5>
+                </div>
+              </li>
 
+              <% @journey.users.each do |seat| %>
+
+              <!-- Rider element -->
+              <li class="media">
+                <div class="media-body">
+                  <h5 class="media-heading">
+                    <a href="/users/<%= seat.id %>">
+                      <%= seat.username %>
+                    </a>
+                    <small style="float: right; font-style: italic">
+                      joined journey <%= time_ago_in_words(Seat.find_by(:journey_id => @journey.id).created_at) %> ago
+                    </small>
+                  </h5>
+                </div>
+              </li>
+
+              <% end %>
+
+            </ul>
+            <!-- Panel body -->
+          </div>
+          <!-- Sub-panel -->
+        </div>
+
+        <!-- Sub-panel for comments -->
+        <div class="panel-group">
+          <div class="panel panel-default">
+            <!-- Sub-panel heading -->
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" aria-expanded="false" href="#collapse_comments">
+                  Comments
+                </a>
+              </h4>
+            </div>
+
+            <!-- Collapse comments -->
+            <div id="collapse_comments" class="panel-collapse collapse">
+
+              <!-- Sub-panel body -->
+              <div class="panel-body">
+
+                <% @journey.comments.each do |comment| %>
+
+                <!-- List for comments -->
+                <ul class="media-list">
+                  <li class="media">
+                    <div class="media-body">
+                      <h5 class="media-heading">
+                        <a href="/users/<%= comment.user_id %>">
+                          <%= comment.user.username %>
+                        </a>
+                        <small style="float: right; font-style: italic">
+                          <%= time_ago_in_words(comment.created_at) %>ago
+                        </small>
+                      </h5>
+                      <%= comment.body %>
+                    </div>
+                  </li>
+                </ul>
+
+                <% end %>
+
+                <!-- Form for new comment -->
                 <form action="/create_comment" method="post">
                   <!-- Hidden input for authenticity token to protect from forgery -->
                   <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
@@ -182,68 +181,7 @@
                     </div>
                   </div>
                 </form>
-
-              </div>
-
-            </li>
-
-          </ul>
-
-          <p>
-
-
-
-
-
-
-            <!-- Buttons -->
-            <% if @journey.organizer_id == current_user.id %>
-
-            <div class="btn-group btn-group-justified">
-
-              <div class="btn-group">
-                <a href="/journeys" class="btn btn-primary">
-                  <i class="fa fa-chevron-left"></i>
-                </a>
-              </div>
-
-              <div class="btn-group">
-                <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
-                  <i class="fa fa-edit"></i>
-                </a>
-              </div>
-
-              <div class="btn-group">
-                <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
-                  <i class="fa fa-trash-o"></i>
-                </a>
-              </div>
-
-            </div>
-
-            <% else %>
-
-            <div class="btn-group btn-group-justified">
-
-              <div class="btn-group">
-                <a href="/journeys" class="btn btn-primary">
-                  <i class="fa fa-chevron-left"></i>
-                </a>
-              </div>
-
-              <div class="btn-group">
-                <form action="/create_seat" method="post">
-                  <!-- Hidden input for authenticity token to protect from forgery -->
-                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-                  <!-- Label and input for journey_id -->
-                  <input type="hidden" name="journey_id" value="<%= @journey.id %>">
-                  <!-- Label and input for user_id -->
-                  <input type="hidden" name="user_id" value="<%= current_user.id %>">
-                  <!-- Button for form -->
-                  <button class="btn btn-success">
-                    Join
-                  </button>
-                </form>
+                <!-- Sub-panel body -->
               </div>
 
             </div>
@@ -252,8 +190,150 @@
 
         </div>
 
+        <!-- Buttons -->
+        <% if @journey.organizer_id == current_user.id %>
+
+        <div class="btn-group btn-group-justified">
+
+          <div class="btn-group">
+            <a href="/journeys" class="btn btn-primary">
+              <i class="fa fa-chevron-left"></i>
+            </a>
+          </div>
+
+          <div class="btn-group">
+            <a href="/journeys/<%= @journey.id %>/edit" class="btn btn-warning">
+              <i class="fa fa-edit"></i>
+            </a>
+          </div>
+
+          <div class="btn-group">
+            <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">
+              <i class="fa fa-trash-o"></i>
+            </a>
+          </div>
+
+        </div>
+
+        <% else %>
+
+        <div class="btn-group btn-group-justified">
+
+          <div class="btn-group">
+            <a href="/journeys" class="btn btn-primary">
+              <i class="fa fa-chevron-left"></i>
+            </a>
+          </div>
+
+          <div class="btn-group">
+            <form action="/create_seat" method="post">
+              <!-- Hidden input for authenticity token to protect from forgery -->
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <!-- Label and input for journey_id -->
+              <input type="hidden" name="journey_id" value="<%= @journey.id %>">
+              <!-- Label and input for user_id -->
+              <input type="hidden" name="user_id" value="<%= current_user.id %>">
+              <!-- Button for form -->
+              <button class="btn btn-success">
+                Join
+              </button>
+            </form>
+          </div>
+
+        </div>
+
       </div>
 
-      <% end %>
-
     </div>
+
+  </div>
+
+  <% end %>
+
+</div>
+
+
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&sensor=false">
+</script>
+
+<script type="text/javascript">
+
+var directionDisplay;
+var directionsService = new google.maps.DirectionsService();
+var geocoder = new google.maps.Geocoder();
+var map;
+
+function initialize() {
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  // set the default center of the map
+  var latlng = new google.maps.LatLng(41.7891278,-87.5964067);
+
+  // set route options (draggable means you can alter/drag the route in the map)
+  var rendererOptions = { draggable: true };
+  directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+
+  // set the display options for the map
+  var myOptions = {
+    zoom: 14,
+    center: latlng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    mapTypeControl: false
+  };
+
+  // add the map to the map placeholder
+  map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+  // bind the map to the directions
+  directionsDisplay.setMap(map);
+  // start the geolocation API
+  if (navigator.geolocation) {
+    // when geolocation is available on your device, run this function
+    navigator.geolocation.getCurrentPosition(foundYou, notFound);
+  } else {
+    // when no geolocation is available, alert this message
+    alert('Geolocation not supported or not enabled.');
+  }
+};
+
+function notFound(msg) {
+  alert('Could not find your location :(')
+};
+
+function calcRoute() {
+  var start = "<%= @journey.origin %>";
+  var end = "<%= @journey.destination %>";
+  // compose a array with options for the directions/route request
+  var request = {
+    origin:start,
+    destination:end,
+    travelMode: 'DRIVING'
+  };
+
+  // call the directions API
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      // directions returned by the API, clear the directions panel before adding new directions
+      $('#directionsPanel').empty();
+      // display the direction details in the container
+      directionsDisplay.setDirections(response);
+    } else {
+      // alert an error message when the route could nog be calculated.
+      if (status == 'ZERO_RESULTS') {
+        alert('No route could be found between the origin and destination.');
+      } else if (status == 'UNKNOWN_ERROR') {
+        alert('A directions request could not be processed due to a server error. The request may succeed if you try again.');
+      } else if (status == 'REQUEST_DENIED') {
+        alert('This webpage is not allowed to use the directions service.');
+      } else if (status == 'OVER_QUERY_LIMIT') {
+        alert('The webpage has gone over the requests limit in too short a period of time.');
+      } else if (status == 'NOT_FOUND') {
+        alert('At least one of the origin, destination, or waypoints could not be geocoded.');
+      } else if (status == 'INVALID_REQUEST') {
+        alert('The DirectionsRequest provided was invalid.');
+      } else {
+        alert("There was an unknown error in your request. Requeststatus: nn"+status);
+      }
+    }
+  });
+}
+</script>

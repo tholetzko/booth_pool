@@ -8,7 +8,6 @@ class SeatsController < ApplicationController
   def show
     @seat = Seat.find(params[:id])
 
-
     render("seats/show.html.erb")
   end
 

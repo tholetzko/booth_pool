@@ -20,11 +20,12 @@ class JourneysController < ApplicationController
   end
 
   def show
-    @journey = Journey.find(params[:id])
     @journeys = Journey.all
+    @journey = Journey.find(params[:id])
     @origin = @journey.origin
     @destination = @journey.destination
 
+    # Parse geocoordinates
     url ="https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyB3eG1Vt6y54OrKrHgpJnZb66QxQvy0kfM&origin="+@origin+"&destination="+@destination+"&sensor=false".gsub(" ","+")
     parsed_data = JSON.parse(open(url).read)
     @start_lat = parsed_data["routes"][0]["legs"][0]["start_location"]["lat"]
@@ -37,19 +38,30 @@ class JourneysController < ApplicationController
       config.server_token  = "lFNFQ-VIhAXqiwJNY8YJ9374hP_0MUeZndHSNs3k"
       config.client_id     = "2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi"
       config.client_secret = "WsFaZ_JEZei9SEbgh0qEchIiSMTvR0ZLbgM-xmrQ"
-      config.sandbox       = true
+      config.sandbox       = false
     end
 
-    # Uber coordinates
-    @uber = client.price_estimations(start_latitude: @start_lat, start_longitude: @start_lng,
+    uber = client.price_estimations(start_latitude: @start_lat, start_longitude: @start_lng,
     end_latitude: @end_lat, end_longitude: @end_lng)
 
-    # UberX
-    @uberx_price = @uber[1]["estimate"]
-    @uberx_duration = @uber[1]["duration"]
+    uber_duration = uber.select { |x| x[:display_name] == 'uberX' }.map { |u| u[:duration] }
+    @uber_duration = uber_duration.to_s.gsub(/\[|\]/,"").gsub('"',"")
 
-    # UberPool
-    @uberpool_price = @uber[0]["estimate"]
+    uber_distance = uber.select { |x| x[:display_name] == 'uberX' }.map { |u| u[:distance] }
+    @uber_distance = uber_distance.to_s.gsub(/\[|\]/,"").gsub('"',"")
+
+    # Uber X
+    uberx_estimate = uber.select { |x| x[:display_name] == 'uberX' }.map { |u| u[:estimate] }
+    @uberx_estimate = uberx_estimate.to_s.gsub(/\[|\]/,"").gsub('"',"")
+
+    # UberPOOL
+    uberpool_estimate = uber.select { |x| x[:display_name] == 'uberPOOL' }.map { |u| u[:estimate] }
+    @uberpool_estimate = uberpool_estimate.to_s.gsub(/\[|\]/,"").gsub('"',"")
+
+    # Lyft API
+
+
+    
 
     render("journeys/show.html.erb")
   end
