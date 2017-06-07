@@ -75,6 +75,11 @@
       <button class="btn btn-warning">
         Update Journey
       </button>
+
+      <div class="btn-group">
+        <a href="/delete_journey/<%= @journey.id %>" class="btn btn-danger" rel="nofollow">Delete Journey</a>
+      </div>
+
       or
       <a href="/journeys/<%= @journey.id %>">Cancel</a>
     </form>

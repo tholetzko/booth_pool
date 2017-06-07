@@ -2,8 +2,12 @@
   <h3>Seat #<%= @seat.id %></h3>
 </div>
 
+
+<%= Seat.where(:journey_id => @seat.journey_id).count %>
+<%= @seat.journey_id %>
+
 <div class="row">
-  <div class="col-md-12 mb-2">
+  <div class="col-md-12">
     <dl class="dl-horizontal">
       <dt>Journey</dt>
       <dd><%= @seat.journey_id %></dd>
