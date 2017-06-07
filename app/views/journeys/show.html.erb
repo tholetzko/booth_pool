@@ -2,7 +2,7 @@
   <div class="col-md-8 col-md-offset-2">
 
     <!-- Main panel -->
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
 
       <!-- Main panel heading -->
       <div class="panel-heading">
@@ -13,7 +13,7 @@
 
       <!-- Main panel body -->
       <div class="panel-body">
-        <div id="map_canvas" style="width:100%; height:200px">
+        <div id="map_canvas" style="width:100%; height:300px">
         </div>
 
         <p> </p>
@@ -31,11 +31,7 @@
           <!-- Sub-panel Body -->
           <div class="panel-body">
 
-            <!-- Map -->
-
-            <p></p>
-
-            <!-- Journey information             -->
+            <!-- Journey information -->
             <dl class="dl-horizontal">
               <dt>Origin</dt>
               <dd><%= @journey.origin %></dd>
@@ -56,11 +52,11 @@
               <dd><%= @uberpool_estimate %></dd>
             </dl>
 
-            <a class="btn btn-primary" href="https://m.uber.com/ul/?action=setPickup&client_id=2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi&pickup[formatted_address]=360%20East%20South%20Water%20Street%2C%20Chicago%2C%20IL%2C%20United%20States&pickup[latitude]=41.886693&pickup[longitude]=-87.617982&dropoff[formatted_address]=Chicago%20Booth%20Harper%20Center%2C%20South%20Woodlawn%20Avenue%2C%20Chicago%2C%20IL%2C%20United%20States&dropoff[latitude]=41.789137&dropoff[longitude]=-87.595455" target="_blank">
+            <a class="btn btn-primary" href="https://m.uber.com/ul/?action=setPickup&client_id=2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi&pickup[formatted_address]=360%20East%20South%20Water%20Street%2C%20Chicago%2C%20IL%2C%20United%20States&pickup[latitude]=<%= @start_lat %>&pickup[longitude]=<%= @start_lng %>&dropoff[formatted_address]=Chicago%20Booth%20Harper%20Center%2C%20South%20Woodlawn%20Avenue%2C%20Chicago%2C%20IL%2C%20United%20States&dropoff[latitude]=<%= @end_lat %>&dropoff[longitude]=<%= @end_lng %>" target="_blank">
               <i class="fa fa-car" aria-hidden="true"></i>
                 Request Uber
             </a>
-            
+
           </div>
         </div>
 

@@ -1,88 +1,85 @@
-<div class="page-header">
-  <h1>
-    Journeys
-    <a href="/journeys/new" class="btn btn-lg btn-success">New Journey</a>
-  </h1>
-</div>
-
 <div class="row">
-
   <div class="col-md-12">
 
-    <div class="collapse" id="journey_form">
+    <!-- Main panel -->
+    <div class="panel panel-default">
 
-      <p class="lead">Narrow results:</p>
-
-      <%= search_form_for @q do |f| %>
-
-      <div class="form-group">
-        <%= f.label :origin_eq, "Origin" %>
-        <%= f.select :origin_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Origin" }, :class => "form-control" %>
+      <!-- Main panel heading -->
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          All Journeys
+        </h3>
       </div>
 
-      <div class="form-group">
-        <%= f.label :destination_eq, "Destination" %>
-        <%= f.select :destination_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Destination" }, :class => "form-control" %>
-      </div>
+      <!-- Main panel body -->
+      <div class="panel-body">
 
-      <div class="form-group">
-        <%= f.label :date_eq, "Destination" %>
-        <%= f.select :date_eq, options_from_collection_for_select(Journey.all, :date, :date, @q.date_eq), { :prompt => "Choose Destination" }, :class => "form-control" %>
-      </div>
+        <!-- Filter -->
+        <div class="collapse" id="journey_form">
 
-      <div class="form-group">
-        <%= f.label :date_gteq, "Released after" %>
-        <%= f.text_field :date_gteq, :class => "form-control", :placeholder => "Year greater than or equal to" %>
-      </div>
+          <p class="lead">Search for journeys:</p>
 
-      <div class="form-group">
-        <%= f.label :date_lteq, "Released before" %>
-        <%= f.text_field :date_lteq, :class => "form-control", :placeholder => "Year less than or equal to" %>
-      </div>
+          <%= search_form_for @q do |f| %>
 
-      <%= f.submit :class => "btn btn-primary btn-block mb-1" %>
+          <div class="form-group">
+            <%= f.label :origin_eq, "Origin" %>
+            <%= f.select :origin_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Origin" }, :class => "form-control" %>
+          </div>
 
-      <a href="/journeys" class="btn btn-default btn-block mb-1">
-        Clear filters</a>
+          <div class="form-group">
+            <%= f.label :destination_eq, "Destination" %>
+            <%= f.select :destination_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Destination" }, :class => "form-control" %>
+          </div>
 
-        <% end %>
+          <div class="form-group">
+            <%= f.label :date_gteq, "Date"%>
+            <%= f.text_field :date_gteq, :class => "form-control"%>
+          </div>
 
-      </div>
+          <%= f.submit :class => "btn btn-info btn-block mb-1" %>
 
-      <a class="btn btn-primary btn-block mb-1" data-toggle="collapse" href="#journey_form" >
-        Show Filters
-      </a>
+          <a href="/journeys" class="btn btn-default btn-block mb-1">
+            Clear filters</a>
 
-    </div>
+            <% end %>
 
-  </div>
+          </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <table class="table table-striped table-hover">
+          <a class="btn btn-primary btn-block mb-1" data-toggle="collapse" href="#journey_form" >
+            <i class="fa fa-filter" aria-hidden="true"></i>
+            Show Filters
+          </a>
 
-        <tr>
-          <th>Date</th>
-          <th>Origin</th>
-          <th>Destination</th>
-          <th>Seats</th>
-          <th>Organizer</th>
-          <th>Actions</th>
-        </tr>
+          <a class="btn btn-success btn-block mb-1" href="/journeys/new">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Create new journey
+          </a>
 
-        <% @journeys.each do |journey| %>
+        </div>
 
-        <tr>
-          <td class="timestring"><%= journey.date %></td>
-          <td><%= journey.origin %></td>
-          <td><%= journey.destination %></td>
-          <td><%= journey.capacity - journey.seats.count %></td>
-          <td><%= journey.organizer.email %></td>
-          <td>
-            <% if journey.organizer_id == current_user.id %>
+        <!-- Journey table -->
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <tr>
+              <th>Date</th>
+              <th>Origin</th>
+              <th>Destination</th>
+              <th>Capacity</th>
+              <th>Actions</th>
+            </tr>
 
-            <div class="">
-              <div class="btn-group">
+            <% @journeys.each do |journey| %>
+
+            <tr>
+              <td class="timestring"><%= journey.date %></td>
+              <td><%= journey.origin %></td>
+              <td><%= journey.destination %></td>
+              <td><%= journey.capacity - journey.seats.count %></td>
+              <td>
+
+                <% if journey.organizer_id == current_user.id %>
+
+                <!-- Buttons for organizer -->
                 <div class="btn-group">
                   <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
                 </div>
@@ -91,41 +88,51 @@
                   <a href="/journeys/<%= journey.id %>/edit" class="btn btn-warning">Edit</a>
                 </div>
 
+                <% else %>
+
+                <!-- Buttons for other user -->
                 <div class="btn-group">
-                  <a href="/delete_journey/<%= journey.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+                  <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
                 </div>
-              </div>
-            </div>
 
-            <% else %>
+                <div class="btn-group">
+                  <form action="/create_seat" method="post">
+                    <!-- Hidden input for authenticity token to protect from forgery -->
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <!-- Label and input for journey_id -->
+                    <input type="hidden" name="journey_id" value="<%= journey.id %>">
+                    <!-- Label and input for user_id -->
+                    <input type="hidden" name="user_id" value="<%= current_user.id %>">
+                    <!-- Button for form -->
+                    <button class="btn btn-success">
+                      Join
+                    </button>
+                  </form>
+                </div>
 
-            <div class="">
-              <div class="btn-group">
-                <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
-              </div>
+                <% end %>
 
-              <div class="btn-group">
-                <form action="/create_seat" method="post">
-                  <!-- Hidden input for authenticity token to protect from forgery -->
-                  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-                  <!-- Label and input for journey_id -->
-                  <input type="hidden" name="journey_id" value="<%= journey.id %>">
-                  <!-- Label and input for user_id -->
-                  <input type="hidden" name="user_id" value="<%= current_user.id %>">
-                  <!-- Button for form -->
-                  <button class="btn btn-success">
-                    Join
-                  </button>
-                </form>
-              </div>
-            </div>
-
+              </td>
+            </tr>
             <% end %>
+          </table>
+        </div>
 
-          </td>
-        </tr>
-        <% end %>
-      </table>
+      </div>
+
     </div>
+
   </div>
 </div>
+
+
+<!-- Script for datetimepicker format -->
+<script type="text/javascript">
+$(function () {
+  $('#datetimepicker').datetimepicker({
+    format: 'MMM D, h:mmA',
+    sideBySide: true,
+    stepping: '15'
+  });
+});
+</script>

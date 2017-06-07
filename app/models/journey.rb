@@ -8,6 +8,6 @@ class Journey < ApplicationRecord
   validates :origin, :presence => true
   validates :destination, :presence => true
   validates :date, :presence => true
-  validates :capacity, :numericality => { :greater_than_or_equal_to => 0 }
   validates :capacity, :presence => true
+  validates :capacity, :numericality => { :less_than_or_equal_to => 6, :greater_than_or_equal_to => 0 }
 end

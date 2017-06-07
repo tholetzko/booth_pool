@@ -11,12 +11,14 @@ gem "starter_generators", :git => "https://github.com/raghubetina/starter_genera
 gem 'bcrypt', platforms: :ruby
 
 # Additional gems for app
+gem 'geocoder'
 gem 'uber-ruby', require: 'uber'
 gem 'rlyft'
-gem 'geocoder'
+gem 'chronic'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 gem 'ransack'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'

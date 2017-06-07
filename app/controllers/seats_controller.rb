@@ -24,18 +24,24 @@ class SeatsController < ApplicationController
 
     if (Seat.where(:journey_id => @seat.journey_id).count + 1) > Journey.find_by(:id => @seat.journey_id).capacity
 
-      redirect_to("/journeys", :alert => "No capacity.")
+      redirect_to("/journeys", :alert => "No more capacity.")
 
     else
 
       save_status = @seat.save
 
       if save_status == true
-        redirect_to("/journeys/#{Journey.find_by(:id => @seat.journey_id).id}", :notice => "Seat created successfully.")
+
+        redirect_to("/journeys/#{Journey.find_by(:id => @seat.journey_id).id}", :notice => "Congratulations - you found a ride!")
+
       else
-        render("seats/new.html.erb")
+
+        redirect_to("/journeys/#{Journey.find_by(:id => @seat.journey_id).id}", :alert => "You already have a seat")
+
       end
+
     end
+
   end
 
   def edit
@@ -61,7 +67,6 @@ class SeatsController < ApplicationController
 
   def destroy
     @seat = Seat.find(params[:id])
-
     @seat.destroy
 
     if URI(request.referer).path == "/seats/#{@seat.id}"

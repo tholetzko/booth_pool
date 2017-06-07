@@ -82,7 +82,7 @@ class JourneysController < ApplicationController
     @journey.origin = params[:origin]
     @journey.destination = params[:destination]
     @journey.capacity = params[:capacity]
-    @journey.date = params[:date]
+    @journey.date = Chronic.parse(params[:date])
     @journey.price = params[:price]
     @journey.organizer_id = params[:organizer_id]
 
@@ -108,7 +108,7 @@ class JourneysController < ApplicationController
     @journey.origin = params[:origin]
     @journey.destination = params[:destination]
     @journey.capacity = params[:capacity]
-    @journey.date = params[:date]
+    @journey.date = Chronic.parse(params[:date])
     @journey.price = params[:price]
     @journey.organizer_id = params[:organizer_id]
 
