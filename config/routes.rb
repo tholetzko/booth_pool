@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
-
   devise_for :users
   root to: 'journeys#index'
-
 
   # Routes for the User resource:
   get "/users", :controller => "users", :action => "index"
@@ -10,6 +8,23 @@ Rails.application.routes.draw do
   get "/users/edit", :controller => "users", :action => "edit"
   get "/my_likes", :controller => "likes", :action => "index"
 
+  # Routes for the Fare resource:
+  # CREATE
+  get "/fares/new", :controller => "fares", :action => "new"
+  post "/create_fare", :controller => "fares", :action => "create"
+
+  # READ
+  get "/fares", :controller => "fares", :action => "index"
+  get "/fares/:id", :controller => "fares", :action => "show"
+  get "/farecalculator", :controller => "fares", :action => "farecalc"
+
+  # UPDATE
+  get "/fares/:id/edit", :controller => "fares", :action => "edit"
+  post "/update_fare/:id", :controller => "fares", :action => "update"
+
+  # DELETE
+  get "/delete_fare/:id", :controller => "fares", :action => "destroy"
+  #------------------------------
 
   # Routes for the Seat resource:
   # CREATE

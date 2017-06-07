@@ -79,8 +79,8 @@ class JourneysController < ApplicationController
   def create
     @journey = Journey.new
 
-    @journey.origin = params[:origin]
-    @journey.destination = params[:destination]
+    @journey.origin = params[:from]
+    @journey.destination = params[:to]
     @journey.capacity = params[:capacity]
     @journey.date = Chronic.parse(params[:date])
     @journey.price = params[:price]
