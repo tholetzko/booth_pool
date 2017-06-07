@@ -23,17 +23,17 @@
 
           <div class="form-group">
             <%= f.label :origin_eq, "Origin" %>
-            <%= f.select :origin_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Origin" }, :class => "form-control" %>
+            <%= f.select :origin_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Select Origin" }, :class => "form-control" %>
           </div>
 
           <div class="form-group">
             <%= f.label :destination_eq, "Destination" %>
-            <%= f.select :destination_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Choose Destination" }, :class => "form-control" %>
+            <%= f.select :destination_eq, options_from_collection_for_select(Journey.all, :origin, :origin, @q.origin_eq), { :prompt => "Select Destination" }, :class => "form-control" %>
           </div>
 
           <div class="form-group">
             <%= f.label :date_gteq, "Date"%>
-            <%= f.text_field :date_gteq, :class => "form-control"%>
+            <%= f.text_field :date_gteq, :id => 'datetimepicker', :class => "form-control", :placeholder => "Select date" %>
           </div>
 
           <%= f.submit :class => "btn btn-info btn-block mb-1" %>
@@ -42,6 +42,9 @@
             Clear filters</a>
 
             <% end %>
+
+
+
 
           </div>
 
@@ -132,7 +135,7 @@ $(function () {
   $('#datetimepicker').datetimepicker({
     format: 'MMM D, h:mmA',
     sideBySide: true,
-    stepping: '15'
+    stepping: '15',
   });
 });
 </script>

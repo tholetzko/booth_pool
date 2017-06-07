@@ -1,6 +1,6 @@
 <!-- Validation failure messages -->
-<% if @journey.errors.any? %>
-<% @journey.errors.full_messages.each do |message| %>
+<% if @fare.errors.any? %>
+<% @fare.errors.full_messages.each do |message| %>
 <div class="alert alert-dismissable alert-danger">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
   <%= message %>
@@ -17,13 +17,13 @@
       <!-- Main panel heading -->
       <div class="panel-heading">
         <h3 class="panel-title">
-          Create new journey
+          Calculate fare
         </h3>
       </div>
 
       <!-- Main panel body -->
       <div class="panel-body">
-        <form action="/create_journey" method="post">
+        <form action="/create_fare" method="post">
           <!-- Hidden input for authenticity token to protect from forgery -->
           <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
@@ -34,7 +34,7 @@
               Origin
             </label>
 
-            <input type="text" id="from" name="from" placeholder="Origin" class="form-control" value="<%= @journey.origin %>">
+            <input type="text" id="from" name="from" placeholder="Origin" class="form-control" value="<%= @fare.origin %>">
             <a id="from-link" href="#">Get my position</a>
           </div>
 
@@ -44,53 +44,21 @@
               Destination
             </label>
 
-            <input type="text" id="to" name="to" placeholder="Destination" class="form-control" value="<%= @journey.destination %>">
+            <input type="text" id="to" name="to" placeholder="Destination" class="form-control" value="<%= @fare.destination %>">
           </div>
-
-          <!-- Label and input for capacity -->
-          <div class="form-group">
-            <label for="capacity" class="control-label">
-              Seats
-            </label>
-
-            <input type="text" id="capacity" name="capacity" placeholder="Seats" class="form-control" value="<%= @journey.capacity %>">
-          </div>
-
-          <!-- Label and input for date -->
-          <div class="form-group">
-            <label for="datetimepicker" class="control-label">
-              Date
-            </label>
-
-            <div class="form-group">
-              <input type='text' class="form-control" id='datetimepicker' placeholder="Date" name="date" value="<%= @journey.date %>">
-            </div>
-
-          </div>
-
-          <!-- Label and input for organizer_id -->
-          <input type="hidden" id="organizer_id" name="organizer_id" placeholder="Organizer" class="form-control" value="<%= current_user.id %>">
 
           <button class="btn btn-success">
-            Create Journey
+            Calculate fare
           </button>
           or
-          <a href="/journeys">Cancel</a>
+          <a href="/fares">Cancel</a>
         </form>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Script for datetimepicker format -->
-  <script type="text/javascript">
-  $(function () {
-    $('#datetimepicker').datetimepicker({
-      format: 'MMM D, h:mmA',
-      sideBySide: true,
-      stepping: '15'
-    });
-  });
-  </script>
+
 
   <!-- Script for Google Maps autocomplete -->
   <script type="text/javascript">

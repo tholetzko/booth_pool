@@ -1,0 +1,46 @@
+<!-- Validation failure messages -->
+<% if @fare.errors.any? %>
+  <% @fare.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Edit Fare #<%= @fare.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/update_fare/<%= @fare.id %>" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for origin -->
+      <div class="form-group">
+        <label for="origin" class="control-label">
+          Origin
+        </label>
+
+        <input type="text" id="origin" name="origin" placeholder="Origin" class="form-control" value="<%= @fare.origin %>">
+      </div>
+
+      <!-- Label and input for destination -->
+      <div class="form-group">
+        <label for="destination" class="control-label">
+          Destination
+        </label>
+
+        <input type="text" id="destination" name="destination" placeholder="Destination" class="form-control" value="<%= @fare.destination %>">
+      </div>
+
+      <button class="btn btn-warning">
+        Update Fare
+      </button>
+      or
+      <a href="/fares/<%= @fare.id %>">Cancel</a>
+    </form>
+  </div>
+</div>

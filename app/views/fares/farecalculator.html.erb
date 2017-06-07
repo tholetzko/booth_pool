@@ -1,0 +1,206 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+    <!-- Main panel -->
+    <div class="panel panel-default">
+
+      <!-- Main panel heading -->
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Calculate Fare
+        </h3>
+      </div>
+
+      <!-- Main panel body -->
+      <div class="panel-body">
+
+        <div class="form-group">
+
+          <form id="calculate-route" name="calculate-route" action="/create_fare" method="post">
+
+            <label for="from" class="control-label">From:</label>
+            <input type="text" id="from" name="from" required="required" class="form-control" placeholder="An address" size="30"/>
+            <a id="from-link" href="#">Get my position</a>
+            <br />
+
+            <label for="to" class="control-label">To:</label>
+            <input type="text" id="to" name="to" required="required" class="form-control" placeholder="Another address" size="30" />
+            <br />
+
+            <input type="submit" class="btn btn-primary"/>
+            <input type="reset" class="btn btn-default"/>
+          </form>
+
+        </div>
+
+        <div id="map"></div>
+
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">
+            <h4>UberPOOL
+              <small style="float: right"><%= @uberpool_estimate %></small>
+            </h4>
+          </li>
+
+          <li class="list-group-item">
+            <h4>UberX
+              <small style="float: right"><%= @uberx_estimate %></small>
+            </h4>
+          </li>
+
+          <li class="list-group-item">
+            <h4>UberXL
+              <small style="float: right"><%= @uberxl_estimate %></small>
+            </h4>
+          </li>
+
+          <li class="list-group-item">
+            <h4>UberBLACK
+              <small style="float: right"><%= @uberblack_estimate %></small>
+            </h4>
+          </li>
+
+          <li class="list-group-item">
+            <h4>UberSELECT
+              <small style="float: right"><%= @uberselect_estimate %></small>
+            </h4>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Script for Google Maps autocomplete -->
+<script type="text/javascript">
+function initialize() {
+  var input = document.getElementById('from');
+  var autocomplete = new google.maps.places.Autocomplete(input);
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<script type="text/javascript">
+function initialize() {
+  var input2 = document.getElementById('to');
+  var autocomplete2 = new google.maps.places.Autocomplete(input2);
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<!-- Script for geocoding -->
+<script>
+function writeAddressName(latLng) {
+  var geocoder = new google.maps.Geocoder();
+  geocoder.geocode({
+    "location": latLng
+  },
+  function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK)
+    document.getElementById("address").innerHTML = results[0].formatted_address;
+    else
+    document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
+  });
+}
+
+function geolocationSuccess(position) {
+  var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+  // Write the formatted address
+  writeAddressName(userLatLng);
+}
+
+function geolocationError(positionError) {
+  document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
+}
+
+function geolocateUser() {
+  // If the browser supports the Geolocation API
+  if (navigator.geolocation)
+  {
+    var positionOptions = {
+      enableHighAccuracy: true,
+      timeout: 10 * 1000 // 10 seconds
+    };
+    navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, positionOptions);
+  }
+  else
+  document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+}
+
+window.onload = geolocateUser;
+
+function calculateRoute(from, to) {
+  var myOptions = {
+    zoom: 10,
+    center: new google.maps.LatLng(41.7891278,-87.5964067),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  // Draw the map
+  var mapObject = new google.maps.Map(document.getElementById("map"), myOptions);
+
+  var directionsService = new google.maps.DirectionsService();
+  var directionsRequest = {
+    origin: from,
+    destination: to,
+    travelMode: google.maps.DirectionsTravelMode.DRIVING,
+    unitSystem: google.maps.UnitSystem.METRIC
+  };
+
+  directionsService.route(
+    directionsRequest,
+    function(response, status)
+    {
+      if (status == google.maps.DirectionsStatus.OK)
+      {
+        new google.maps.DirectionsRenderer({
+          map: mapObject,
+          directions: response
+        });
+      }
+      else
+      $("#error").append("Unable to retrieve your route<br />");
+    }
+  );
+}
+
+$(document).ready(function() {
+  // If the browser supports the Geolocation API
+  if (typeof navigator.geolocation == "undefined") {
+    $("#error").text("Your browser doesn't support the Geolocation API");
+    return;
+  }
+
+  $("#from-link, #to-link").click(function(event) {
+    event.preventDefault();
+    var addressId = this.id.substring(0, this.id.indexOf("-"));
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({
+        "location": new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+      },
+      function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK)
+        $("#" + addressId).val(results[0].formatted_address);
+        else
+        $("#error").append("Unable to retrieve your address<br />");
+      });
+    },
+    function(positionError){
+      $("#error").append("Error: " + positionError.message + "<br />");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10 * 1000 // 10 seconds
+    });
+  });
+
+  $("#calculate-route").submit(function(event) {
+    event.preventDefault();
+    calculateRoute($("#from").val(), $("#to").val());
+  });
+});
+</script>
