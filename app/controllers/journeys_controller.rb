@@ -47,6 +47,10 @@ class JourneysController < ApplicationController
     uberpool_estimate = uber.select { |x| x[:display_name] == 'uberPOOL' }.map { |u| u[:estimate] }
     @uberpool_estimate = uberpool_estimate.to_s.gsub(/\[|\]/,"").gsub('"',"")
 
+url2 ="https://m.uber.com/ul/?action=setPickup&client_id=2oVqH3_uKKBif3xXNrXY-EpG5hLjguJi&pickup[formatted_address]="+@origin+"&pickup[latitude]="+@start_lat.to_s+"&pickup[longitude]="+@start_lng.to_s+"&dropoff[formatted_address]="+@destination+"&dropoff[latitude]="+@end_lat.to_s+"&dropoff[longitude]="+@end_lng.to_s
+
+@uberurl = url2.gsub(" ","+")
+
     # Lyft API - **not working**
     # client = Lyft::Client.new(
     # client_id: '-PoccgdT6obM',
