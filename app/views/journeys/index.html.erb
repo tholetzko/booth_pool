@@ -81,7 +81,7 @@
               <td><%= journey.capacity - journey.seats.count %></td>
               <% end %>
               <td>
-                
+
                 <% if journey.organizer_id == current_user.id %>
 
                 <!-- Buttons for organizer -->
@@ -117,7 +117,7 @@
                   </form>
                 </div>
 
-                <% else %>
+                <% elsif journey.users.include? current_user %>
 
                 <div class="btn-group">
                   <form action="/create_seat" method="post">
@@ -129,6 +129,24 @@
                     <input type="hidden" name="user_id" value="<%= current_user.id %>">
                     <!-- Button for form -->
                     <button class="btn btn-success disabled">
+                      Join
+                    </button>
+                  </form>
+                </div>
+
+
+                <% else %>
+
+                <div class="btn-group">
+                  <form action="/create_seat" method="post">
+                    <!-- Hidden input for authenticity token to protect from forgery -->
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <!-- Label and input for journey_id -->
+                    <input type="hidden" name="journey_id" value="<%= journey.id %>">
+                    <!-- Label and input for user_id -->
+                    <input type="hidden" name="user_id" value="<%= current_user.id %>">
+                    <!-- Button for form -->
+                    <button class="btn btn-success">
                       Join
                     </button>
                   </form>
