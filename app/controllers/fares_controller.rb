@@ -1,6 +1,6 @@
 class FaresController < ApplicationController
   def farecalc
-    
+
     render("fares/farecalculator.html.erb")
   end
 
@@ -77,7 +77,7 @@ class FaresController < ApplicationController
     save_status = @fare.save
 
     if save_status == true
-      redirect_to("/fares/#{@fare.id}", :notice => "Fare created successfully.")
+      redirect_to("/fares/#{@fare.id}", :notice => "Congratulations - below are the current Uber fares for your journey.")
     else
       render("fares/new.html.erb")
     end
@@ -98,7 +98,7 @@ class FaresController < ApplicationController
     save_status = @fare.save
 
     if save_status == true
-      redirect_to("/fares/#{@fare.id}", :notice => "Fare updated successfully.")
+      redirect_to("/fares/#{@fare.id}", :notice => "Fare estimated successfully.")
     else
       render("fares/edit.html.erb")
     end
