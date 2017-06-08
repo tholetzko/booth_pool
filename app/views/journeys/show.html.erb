@@ -223,6 +223,25 @@
             </a>
           </div>
 
+          <% if @journey.capacity - @journey.seats.count == 0 %>
+
+          <div class="btn-group">
+            <form action="/create_seat" method="post">
+              <!-- Hidden input for authenticity token to protect from forgery -->
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <!-- Label and input for journey_id -->
+              <input type="hidden" name="journey_id" value="<%= @journey.id %>">
+              <!-- Label and input for user_id -->
+              <input type="hidden" name="user_id" value="<%= current_user.id %>">
+              <!-- Button for form -->
+              <button class="btn btn-success disabled">
+                Join
+              </button>
+            </form>
+          </div>
+
+          <% else  %>
+
           <div class="btn-group">
             <form action="/create_seat" method="post">
               <!-- Hidden input for authenticity token to protect from forgery -->
@@ -237,6 +256,8 @@
               </button>
             </form>
           </div>
+
+          <% end %>
 
         </div>
 

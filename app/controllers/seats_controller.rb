@@ -36,7 +36,7 @@ class SeatsController < ApplicationController
 
       else
 
-        redirect_to("/journeys/#{Journey.find_by(:id => @seat.journey_id).id}", :alert => "You already have a seat")
+        redirect_to("/journeys/#{Journey.find_by(:id => @seat.journey_id).id}", :alert => "Sorry - you already have a seat")
 
       end
 

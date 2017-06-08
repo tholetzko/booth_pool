@@ -74,9 +74,14 @@
               <td class="timestring"><%= journey.date %></td>
               <td><%= journey.origin %></td>
               <td><%= journey.destination %></td>
-              <td><%= journey.capacity - journey.seats.count %></td>
-              <td>
 
+              <% if journey.capacity - journey.seats.count == 0 %>
+              <td class="text-danger">Full</td>
+              <% else %>
+              <td><%= journey.capacity - journey.seats.count %></td>
+              <% end %>
+              <td>
+                
                 <% if journey.organizer_id == current_user.id %>
 
                 <!-- Buttons for organizer -->
@@ -95,6 +100,8 @@
                   <a href="/journeys/<%= journey.id %>" class="btn btn-primary">Show</a>
                 </div>
 
+                <% if journey.capacity - journey.seats.count == 0 %>
+
                 <div class="btn-group">
                   <form action="/create_seat" method="post">
                     <!-- Hidden input for authenticity token to protect from forgery -->
@@ -104,12 +111,30 @@
                     <!-- Label and input for user_id -->
                     <input type="hidden" name="user_id" value="<%= current_user.id %>">
                     <!-- Button for form -->
-                    <button class="btn btn-success">
+                    <button class="btn btn-success disabled">
                       Join
                     </button>
                   </form>
                 </div>
 
+                <% else %>
+
+                <div class="btn-group">
+                  <form action="/create_seat" method="post">
+                    <!-- Hidden input for authenticity token to protect from forgery -->
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <!-- Label and input for journey_id -->
+                    <input type="hidden" name="journey_id" value="<%= journey.id %>">
+                    <!-- Label and input for user_id -->
+                    <input type="hidden" name="user_id" value="<%= current_user.id %>">
+                    <!-- Button for form -->
+                    <button class="btn btn-success disabled">
+                      Join
+                    </button>
+                  </form>
+                </div>
+
+                <% end %>
                 <% end %>
 
               </td>
