@@ -24,7 +24,7 @@ class SeatsController < ApplicationController
 
     if (Seat.where(:journey_id => @seat.journey_id).count + 1) > Journey.find_by(:id => @seat.journey_id).capacity
 
-      redirect_to("/journeys", :alert => "No more capacity.")
+      redirect_to("/journeys", :alert => "Sorry - this journey is already full.")
 
     else
 

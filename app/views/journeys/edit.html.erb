@@ -42,7 +42,7 @@
               Destination
             </label>
 
-            <input type="text" id="destination" name="destination" placeholder="Destination" class="form-control" value="<%= @journey.destination %>">
+            <input type="text" id="destination" name="destination" class="form-control" value="<%= @journey.destination %>">
           </div>
 
           <!-- Label and input for capacity -->
@@ -51,7 +51,7 @@
               Capacity
             </label>
 
-            <input type="text" id="capacity" name="capacity" placeholder="Capacity" class="form-control" value="<%= @journey.capacity %>">
+            <input type="text" id="capacity" name="capacity"  class="form-control" value="<%= @journey.capacity %>">
           </div>
 
           <!-- Label and input for date -->
@@ -61,13 +61,13 @@
             </label>
 
             <div class="form-group">
-              <input type='text' class="form-control" id='datetimepicker' placeholder="Date" name="date" value="<%= @journey.date %>">
+              <input type='text' class="form-control" id='datetimepicker' name="date" value="<%= @journey.date %>">
             </div>
 
           </div>
 
           <!-- Label and input for organizer_id -->
-            <input type="hidden" id="organizer_id" name="organizer_id" placeholder="Organizer" class="form-control" value="<%= @journey.organizer_id %>">
+            <input type="hidden" id="organizer_id" name="organizer_id" class="form-control" value="<%= @journey.organizer_id %>">
 
           <button class="btn btn-warning">
             Update Journey
@@ -88,10 +88,9 @@
 <script type="text/javascript">
 $(function () {
   $('#datetimepicker').datetimepicker({
-    defaultDate: '<%= @journey.date %>';
-    format: 'MMM D, h:mmA',
     sideBySide: true,
     stepping: '15'
+    defaultDate: '<%= @journey.date.strftime("%m/%d/%y") %>',
   });
 });
 </script>
