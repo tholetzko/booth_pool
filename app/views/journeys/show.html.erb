@@ -52,10 +52,12 @@
               <dd><%= @uberpool_estimate %></dd>
             </dl>
 
+            <% if @journey.organizer_id == current_user.id %>
             <a class="btn btn-primary" href="<%= @uberurl %>" target="_blank">
               <i class="fa fa-car" aria-hidden="true"></i>
-                Request Uber
+              Request Uber
             </a>
+            <% end  %>
 
           </div>
         </div>
